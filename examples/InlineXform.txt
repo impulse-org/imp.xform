@@ -98,7 +98,6 @@ correct translation:
 
 xform language:
 
- 
  Includes pre-defined predicates/functions for standard static analysis "facts" (e.g. "set of locations
     written to by node N", "set of methods called by node N", "dynamic type of node N")
 
@@ -151,14 +150,14 @@ xform language:
 
                      [A
                       |-[B]
-                      \+[P
-                         \-[C
-                            \-[D]]]] =>
+                      \-...-[P
+                             \-[C
+                                \-[D]]]] =>
                      [f1(A)
                       |-[B]
-                      \+[P
-                         \-[f2(C)
-                            \-[D]]]]
+                      \-...-[P
+                             \-[f2(C)
+                                \-[D]]]]
 
     In patterns, can use the following to identify ast nodes:
 
@@ -174,3 +173,51 @@ xform language:
       - typeof(N) == Integer [constrains the "target type" in the program of node N - (3) above is syntactic sugar for this]
       - pred(a1,...,ak)      [true if the given args satisfy predicate 'pred'.
                               Valid args are: meta-variables, literals (types, primitive values), node ctors]
+
+ Representation of Structural Patterns:
+ 
+   - not in terms of concrete AST's for target language!
+   - in terms of generic AST's:
+     - (probably) a single generic AST node type
+       - ID
+       - 0+ children
+       - set of constraints
+     - some number of generic parent/child relation links
+       - single-level ("normal" case)
+       - multi-level ("...")
+     - node types, target types, etc. expressed as constraints on individual AST nodes
+       - "ast(N) == Expr" is basically done by reflection (e.g. getClass())
+       - "typeof(N) == Integer" requires hooks into target language type system
+
+   - benefits:
+     - representation is essentially language-independent
+     - some of the matching engine will be language-independent, but obviously needs
+       language-specific handlers for things like typeof(), other constraints
+
+   pattern.Node
+
+      - name
+      - Set<Constraint>
+
+      pattern.AnyNode - used to designate a
+      pattern.RepeatedNode - used to designate some # of child nodes all respecting the same constraints
+        - has a pattern.Node
+        - repetition bounds
+
+   pattern.Constraint - predicate having list 
+
+      pattern.AttributeConstraint - compare attribute of target AST node to given value
+         - lhs attribute accessor closure - produces a Value
+         - operator (extensible type AttributeOperator)
+         - rhs attribute accessor closure - produces a Value
+
+         Value space should be extensible? - can be extended for different languages, different static analyses, etc.
+
+         Question: Can make do with just primitives plus (recursively nested) Sets?
+
+   pattern.Link
+      - type (single level, multi-level)
+
+   pattern.Pattern
+      - Node
+      - inter-node constraints (if any?)
