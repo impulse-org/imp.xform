@@ -1,0 +1,77 @@
+Transform language:
+
+ Includes pre-defined predicates/functions for standard static analysis "facts" (e.g. "set of locations
+    written to by node N", "set of methods called by node N", "dynamic type of node N")
+
+ LHS pattern
+ 
+  - establish meta-variable bindings
+
+  - pattern over typed AST node structures, with target type constraints (e.g. "type of node N is Object")
+
+ Precondition language
+ 
+  - including access to predicates/functions
+
+ RHS structure w/ meta-variable substitution
+
+  - including access to predicates/functions (e.g., so that one can use static/dynamic type of some node
+    in a generated cast)
+
+ need:
+   - replace node with node'  : implicit in relationship of LHS/RHS
+   - insert stmt' before stmt : implicit in relationship of LHS/RHS
+   - create node' with args   : implicit in relationship of LHS/RHS
+
+   E.g. the following visual pattern:
+ 
+           A                  f1(A)
+          / \+                 / \+
+         B   P                B   P
+              \       =>           \
+               C                   f2(C)
+                \                    \
+                 D                    D
+
+    Construed as "A has precisely two children, B and P..., P has precisely one child, C, and ..."
+
+    Concrete syntax looks like this:
+
+                     [A
+                        [B]
+                        +[P
+                           [C
+                             [D]]]] =>
+                     [f1(A)
+                            [B]
+                            +[P
+                                [f2(C)
+                                      [D]]]]
+
+    Possible syntactic sugar for appearance:
+
+                     [A
+                      |-[B]
+                      \-...-[P
+                             \-[C
+                                \-[D]]]] =>
+                     [f1(A)
+                      |-[B]
+                      \-...-[P
+                             \-[f2(C)
+                                \-[D]]]]
+
+    In patterns, can use the following to identify ast nodes:
+
+      1) non-terminal name alone (e.g. "Expr", if you don't need to ref it on the RHS)
+      2) non-terminal + meta-variable name (e.g. "Expr e1"), or
+      3) non-terminal + meta-variable name + target static type constraint (e.g. "Expr e1:int")
+
+    Links are matched "syntactically", e.g. /+ matches /+, but not /+ followed by /.
+
+    Precondition syntax: 1st-order formulas with the following atoms:
+
+      - ast(N) == Expr       [constrains the AST node type of the node N - (1) above is syntactic sugar for this]
+      - typeof(N) == Integer [constrains the "target type" in the program of node N - (3) above is syntactic sugar for this]
+      - pred(a1,...,ak)      [true if the given args satisfy predicate 'pred'.
+                              Valid args are: meta-variables, literals (types, primitive values), node ctors]

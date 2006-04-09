@@ -1,0 +1,52 @@
+ Representation of Structural Patterns:
+ 
+   - not in terms of concrete AST's for target language!
+   - in terms of generic AST's:
+     - (probably) a single generic AST node type
+       - ID
+       - 0+ children
+       - set of constraints
+     - some number of generic parent/child relation links
+       - single-level ("normal" case)
+       - multi-level ("...")
+     - node types, target types, etc. expressed as constraints on individual AST nodes
+       - "ast(N) == Expr" is basically done by reflection (e.g. getClass())
+       - "typeof(N) == Integer" requires hooks into target language type system
+
+   - benefits:
+     - representation is essentially language-independent
+     - some of the matching engine will be language-independent, but obviously needs
+       language-specific handlers for things like typeof(), other constraints
+
+   pattern.Node
+
+      - optional name
+      - Set<Constraint>
+
+      pattern.AnyNode - (unnecessary; just use an unnamed unconstrained Node)
+
+      pattern.RepeatedNode - used to designate some # of child nodes all respecting the same constraints
+        - has a pattern.Node
+        - repetition bounds
+
+   pattern.Constraint - predicate having list 
+
+      pattern.AttributeConstraint - compare attribute of target AST node to given value
+         - lhs attribute accessor closure - produces a Value
+         - operator (extensible type AttributeOperator)
+         - rhs attribute accessor closure - produces a Value
+
+         Value space should be extensible? - can be extended for different languages, different static analyses, etc.
+
+         Question: Can make do with just primitives plus (recursively nested) Sets?
+
+   pattern.Link
+      - type (single level, multi-level)
+
+   pattern.Pattern
+      - Node
+      - inter-node constraints (if any?)
+
+ ===> Would be cool to be able to translate the above representation into specialized Java code for
+      more efficient matching. Ordinary users in Search/Replace might use "interpreted" mode, but
+      IDE/refactoring developers might compile the transform pattern representation into Java.

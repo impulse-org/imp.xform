@@ -1,0 +1,95 @@
+case 1: (trivial, no assignments to variables used in
+        actual arg exprs within this stmt)
+
+before:
+
+  a + bar(b) + c;
+
+after:
+
+  final int b_ = b;
+  a + (new Inlined() {
+      public int intMethod() {
+          <body of bar() using b_>
+      }
+      }).intMethod() + c
+
+case 2: side-effect, no other refs
+
+before:
+
+  a + bar(++b) + c;
+
+after:
+
+  final int b_ = b+1;
+  a + (new Inlined() {
+      public int intMethod() {
+          <body of bar() using b_>
+      }
+      }).intMethod() + c
+  b = b_
+
+case 3: side-effect
+
+before:
+
+  a + b + bar(++b) + b + c;
+
+after:
+
+  final int b_ = b+1;
+  a + b + (new Inlined() {
+      public int intMethod() {
+          <body of bar() using b_>
+      }
+      }).intMethod() + b_ + c
+  b = b_
+
+alternative:
+
+  final int b_ = b+1;
+  a + b + (new Inlined() {
+      public int intMethod(int dummy) {
+          <body of bar() using b_>
+      }
+      }).intMethod((++b)) + b + c
+
+  // i.e., roll side effects into dummy actual args of synthesized method
+
+  
+a + b + bar(++b, o = q, c *= 3) + b + c
+
+  final int b_ = b+1;
+  final Object o_ = q;
+  final int c_ = c*3;
+  a + b + (new Inlined() {
+      public int intMethod(Object dummy) {
+          <body of bar() using b_, o_, and c_>
+      }
+      }).intMethod((new Integer(++b), o = q, new Integer(c *= 3), null)) + b + c
+
+
+case 4: nasty, nasty general case
+
+before:
+
+  a + b + bar(b = foo()) + b + c;
+
+after:
+
+  final int b_ = ????;
+  a + b + (new Inlined() {
+      public int intMethod(Object dummy) {
+          <body of bar() using b_>
+      }
+      }).intMethod((new Integer(b = foo()), null)) + b + c
+
+correct translation:
+
+  int t1 = a + b;
+  int a1 = (b = foo());
+  <body of bar() using a1>
+  int t2 = return value of bar();
+  int t3 = b + c;
+  t1 + t2 + t3
