@@ -4,7 +4,7 @@
 %options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=ASTNode
 
 $Define
-    $ast_class /.Object./
+    $ast_class /.Pattern./
 $End
 
 $Terminals
@@ -37,7 +37,7 @@ $Start
 $End
 
 $Rules
-    Pattern ::= Node
+    Pattern$Pattern ::= Node
 
     Node ::= '['$ NodeType$type optNodeName$name optTargetType$targetType optConstraintList$constraints ChildList ']'$
 
