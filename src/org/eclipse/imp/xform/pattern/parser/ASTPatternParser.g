@@ -58,8 +58,7 @@ $Rules
     NumericBound ::= NUMBER
     Unbounded    ::= '*'
 
-    Attribute ::= NodeAttribute | Literal
-
+    Attribute     ::= NodeAttribute | Literal
     NodeAttribute ::= IDENTIFIER optNodeIdent
     optNodeIdent  ::= '('$ IDENTIFIER ')'$ | $empty
 
@@ -72,11 +71,11 @@ $Rules
     NotEquals ::= '!='$
 
     ChildList$$Child ::= $empty
-        | ChildList Child
+                       | ChildList Child
 
     Child ::= LinkType Node
 
-    LinkType ::= DirectLink | ClosureLink
-    DirectLink ::= '|-'$ | '\-'$
+    LinkType    ::= DirectLink | ClosureLink
+    DirectLink  ::= '|-'$ | '\-'$
     ClosureLink ::= DirectLink '...' '-'
 $End
