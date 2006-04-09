@@ -5,59 +5,78 @@
 
 $Define
     $ast_class /.Object./
---    $additional_interfaces /., IParser./
 $End
 
 $Terminals
      IDENTIFIER 
      NUMBER
      STRING
-     SEMICOLON ::= ';'
-     COLON ::= ':'
-     ELLIPSIS ::= '...'
-     PLUS ::= '+'
-     MINUS ::= '-'
-     EQUALS ::= '=='
-     NOTEQUALS ::= '!='
-     LEFTPAREN ::= '('
-     RIGHTPAREN ::= ')'
-     LEFTBRACE ::= '{'
-     RIGHTBRACE ::= '}'
-     LEFTBRACKET ::= '['
+     SEMICOLON    ::= ';'
+     COLON        ::= ':'
+     COMMA        ::= ','
+     ELLIPSIS     ::= '...'
+     PLUS         ::= '+'
+     MINUS        ::= '-'
+     TIMES        ::= '*'
+     EQUALS       ::= '=='
+     NOTEQUALS    ::= '!='
+     LEFTPAREN    ::= '('
+     RIGHTPAREN   ::= ')'
+     LEFTBRACE    ::= '{'
+     RIGHTBRACE   ::= '}'
+     LEFTBRACKET  ::= '['
      RIGHTBRACKET ::= ']'
+     DIRECT       ::= '|-'
+     DIRECTEND    ::= '\-'
+     LESSTHAN     ::= '<'
+     GREATERTHAN  ::= '>'
+$End
+
+$Start
+    Pattern
 $End
 
 $Rules
-    pattern ::= nodeSpec
+    Pattern ::= Node
 
-    nodeSpec ::= '[' nodeType optNodeName optTargetType optConstraintList childList ']'
+    Node ::= '['$ NodeType$type optNodeName$name optTargetType$targetType optConstraintList$constraints ChildList ']'$
 
-    nodeType ::= IDENTIFIER
-
-    optNodeName ::= IDENTIFIER | $empty
-
+    NodeType      ::= IDENTIFIER
+    optNodeName   ::= IDENTIFIER | $empty
     optTargetType ::= COLON IDENTIFIER | $empty
 
     optConstraintList ::= $empty
-        | '{' constraintList '}'
+                        | '{'$ ConstraintList '}'$
 
-    constraintList$$constraint ::= $empty
-        | constraintList constraint
+    ConstraintList$$Constraint ::= $empty
+                                 | ConstraintList ',' Constraint
 
-    constraint ::= attribute op attribute
+    Constraint ::= Attribute Operator Attribute
+                 | '<' Bound ':' Bound '>'
 
-    attribute ::= nodeAttribute | literal
+    Bound        ::= NumericBound | Unbounded
+    NumericBound ::= NUMBER
+    Unbounded    ::= '*'
 
-    nodeAttribute ::= IDENTIFIER optNodeIdent
+    Attribute ::= NodeAttribute | Literal
 
-    optNodeIdent ::= '(' IDENTIFIER ')' | $empty
+    NodeAttribute ::= IDENTIFIER optNodeIdent
+    optNodeIdent  ::= '('$ IDENTIFIER ')'$ | $empty
 
-    literal ::= NUMBER | STRING
+    Literal ::= NumberLiteral | StringLiteral
+    NumberLiteral ::= NUMBER
+    StringLiteral ::= STRING
 
-    op ::= '==' | '!='
+    Operator  ::= Equals | NotEquals
+    Equals    ::= '=='$
+    NotEquals ::= '!='$
 
-    childList$$child ::= $empty
-        | childList child
+    ChildList$$Child ::= $empty
+        | ChildList Child
 
-    child ::= nodeSpec
+    Child ::= LinkType Node
+
+    LinkType ::= DirectLink | ClosureLink
+    DirectLink ::= '|-'$ | '\-'$
+    ClosureLink ::= DirectLink '...' '-'
 $End
