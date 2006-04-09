@@ -23,6 +23,7 @@ $Export
     STRING
     SEMICOLON
     COLON
+    COMMA
     ELLIPSIS
     LEFTPAREN
     RIGHTPAREN
@@ -32,8 +33,12 @@ $Export
     RIGHTBRACKET
     PLUS
     MINUS
+    TIMES
     EQUALS
     NOTEQUALS
+    DIRECT
+    DIRECTEND
+    CLOSURE
 $End
 
 $Terminals
@@ -90,6 +95,8 @@ $Terminals
     Ellipsis     ::= '...'
     NotEquals    ::= '!='
     Equals       ::= '=='
+    Direct       ::= '|-'
+    DirectEnd    ::= '\-'
 $End
 
 $Start
@@ -118,6 +125,12 @@ $Rules
           $EndJava
         ./
 
+    Token ::= ','
+        /.$BeginJava
+                    makeToken($_COMMA);
+          $EndJava
+        ./
+
     Token ::= ':'
         /.$BeginJava
                     makeToken($_COLON);
@@ -139,6 +152,12 @@ $Rules
     Token ::= '-'
         /.$BeginJava
                     makeToken($_MINUS);
+          $EndJava
+        ./
+
+    Token ::= '*'
+        /.$BeginJava
+                    makeToken($_TIMES);
           $EndJava
         ./
 
@@ -187,6 +206,18 @@ $Rules
     Token ::= '!='
         /.$BeginJava
                     makeToken($_NOTEQUALS);
+          $EndJava
+        ./
+
+    Token ::= '|-'
+        /.$BeginJava
+                    makeToken($_DIRECT);
+          $EndJava
+        ./
+
+    Token ::= '\-'
+        /.$BeginJava
+                    makeToken($_DIRECTEND);
           $EndJava
         ./
 
