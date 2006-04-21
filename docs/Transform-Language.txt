@@ -71,7 +71,7 @@ Transform language:
 
     Precondition syntax: 1st-order formulas with the following atoms:
 
-      - ast(N) == Expr       [constrains the AST node type of the node N - (1) above is syntactic sugar for this]
+      - ast(N) == Expr       [constrains the AST node type of the node N - (2) above is syntactic sugar for this]
       - typeof(N) == Integer [constrains the "target type" in the program of node N - (3) above is syntactic sugar for this]
       - pred(a1,...,ak)      [true if the given args satisfy predicate 'pred'.
                               Valid args are: meta-variables, literals (types, primitive values), node ctors]
