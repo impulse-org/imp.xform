@@ -1,10 +1,20 @@
 %options package=com.ibm.watson.safari.xform.pattern.parser
 %options template=UIDE/dtParserTemplate.gi
 %options import_terminals=ASTPatternLexer.gi
-%options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=ASTNode
+%options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=PatternNode
 
 $Define
     $ast_class /.Pattern./
+$End
+
+$Globals
+    /.import com.ibm.watson.safari.xform.pattern.AccessorAdapter;./
+$End
+
+$Headers
+    /.private static AccessorAdapter fAccessorAdapter;
+      public static AccessorAdapter getAccessorAdapter() { return fAccessorAdapter; }
+     ./
 $End
 
 $Terminals
@@ -51,24 +61,33 @@ $Rules
     ConstraintList$$Constraint ::= $empty
                                  | ConstraintList ',' Constraint
 
-    Constraint ::= Attribute Operator Attribute
-                 | '<' Bound ':' Bound '>'
+    Constraint ::= OperatorConstraint
+                 | BoundConstraint
 
-    Bound        ::= NumericBound | Unbounded
-    NumericBound ::= NUMBER
-    Unbounded    ::= '*'
+    OperatorConstraint ::= Attribute$lhs Operator Attribute$rhs
 
-    Attribute     ::= NodeAttribute | Literal
+    BoundConstraint ::= '<'$ Bound$lowerBound ':'$ Bound$upperBound '>'$
+    Bound           ::= NumericBound | Unbounded
+    NumericBound    ::= NUMBER
+    Unbounded       ::= '*'
+
+    Attribute     ::= NodeAttribute
+                    | Literal
     NodeAttribute ::= IDENTIFIER optNodeIdent
+        /. public Object getValue() { return ASTPatternParser.getAccessorAdapter().getValue(this); } ./
     optNodeIdent  ::= '('$ IDENTIFIER ')'$ | $empty
 
     Literal ::= NumberLiteral | StringLiteral
-    NumberLiteral ::= NUMBER
-    StringLiteral ::= STRING
+    NumberLiteral ::= NUMBER$valueStr
+        /. public Object getValue() { return new Integer(getvalueStr().toString()); } ./
+    StringLiteral ::= STRING$valueStr
+        /. public Object getValue() { return getvalueStr().toString(); } ./
 
     Operator  ::= Equals | NotEquals
     Equals    ::= '=='$
+        /. public boolean evaluate(Object lhs, Object rhs) { return lhs.equals(rhs); } ./
     NotEquals ::= '!='$
+        /. public boolean evaluate(Object lhs, Object rhs) { return !lhs.equals(rhs); } ./
 
     ChildList$$Child ::= $empty
                        | ChildList Child
@@ -76,6 +95,6 @@ $Rules
     Child ::= LinkType Node
 
     LinkType    ::= DirectLink | ClosureLink
-    DirectLink  ::= '|-'$ | '\-'$
+    DirectLink  ::= '|-'$ | '\-'$ | $empty
     ClosureLink ::= DirectLink '...' '-'
 $End
