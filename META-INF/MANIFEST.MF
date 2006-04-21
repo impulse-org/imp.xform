@@ -8,5 +8,7 @@ Bundle-Vendor: rfuhrer@watson.ibm.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- lpg
+ lpg,
+ polyglot2,
+ org.junit
 Eclipse-AutoStart: true
