@@ -1,10 +1,4 @@
-ASTPatternKWLexer.java
-ASTPatternKWLexerprs.java
-ASTPatternKWLexersym.java
-ASTPatternLexer.java
-ASTPatternLexerprs.java
-ASTPatternLexersym.java
-astpatternParser.java
-astpatternParserprs.java
-astpatternParsersym.java
+ASTPatternParser*.java
+ASTPatternLexer*.java
+ASTPatternKWLexer*.java
 *.l
