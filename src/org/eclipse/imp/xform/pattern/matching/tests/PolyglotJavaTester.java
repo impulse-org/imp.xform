@@ -21,18 +21,21 @@ import polyglot.visit.NodeVisitor;
 import polyglot.visit.PrettyPrinter;
 
 import com.ibm.watson.safari.xform.pattern.matching.Matcher;
+import com.ibm.watson.safari.xform.pattern.matching.PolyglotAccessorAdapter;
 import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternLexer;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
 
 public class PolyglotJavaTester extends TestCase {
+    private static final TypeSystem_c fTypeSystem= new TypeSystem_c();
+
     private static SourceFile parseSourceFile(String srcFilePath) throws Exception {
         StdErrorQueue eq= new StdErrorQueue(System.err, 100, "__ERRORS__");
         File srcFile= new File(srcFilePath);
         FileSource fileSource= new FileSource(srcFile);
         Lexer_c lexer= new Lexer_c(new FileInputStream(srcFile), fileSource, eq);
-        Grm parser= new Grm(lexer, new TypeSystem_c(), new NodeFactory_c(), eq);
+        Grm parser= new Grm(lexer, fTypeSystem, new NodeFactory_c(), eq);
         Symbol sym= parser.parse();
 
         return (SourceFile) sym.value;
@@ -43,6 +46,7 @@ public class PolyglotJavaTester extends TestCase {
         ASTPatternParser parser= new ASTPatternParser(lexer.getLexStream());
 
         lexer.lexer(parser); // Why wasn't this done by the parser ctor?
+        ASTPatternParser.setAccessorAdapter(new PolyglotAccessorAdapter(fTypeSystem));
 
         Pattern pattern= parser.parser();
 
