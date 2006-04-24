@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.ibm.watson.safari.xform.pattern.AccessorAdapter;
+import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.BoundConstraint;
+import com.ibm.watson.safari.xform.pattern.parser.Ast.Child;
+import com.ibm.watson.safari.xform.pattern.parser.Ast.ChildList;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.ConstraintList;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Equals;
-import com.ibm.watson.safari.xform.pattern.parser.Ast.IBound;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.IConstraint;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.IOperator;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Node;
@@ -16,12 +19,15 @@ import com.ibm.watson.safari.xform.pattern.parser.Ast.NotEquals;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.OperatorConstraint;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.optConstraintList;
+import com.ibm.watson.safari.xform.pattern.parser.Ast.optTargetType;
 
 /**
  * @author rfuhrer@watson.ibm.com
  */
 public class Matcher {
     private Pattern fPattern;
+
+    private AccessorAdapter fAccessorAdapter= ASTPatternParser.getAccessorAdapter();
 
     public static class MatchContext {
         private Object fRoot;
@@ -80,12 +86,29 @@ public class Matcher {
     }
 
     private boolean doMatch(Node patternNode, Object astNode, MatchContext match) throws Exception {
-        NodeType type= patternNode.gettype();
+        NodeType patNodeASTType= patternNode.gettype();
+        optTargetType patNodeTargetType= patternNode.gettargetType();
+        String typeName= patNodeASTType.getIDENTIFIER().toString();
 
-        if (type != null && !Class.forName("polyglot.ast." + type.getIDENTIFIER().toString()).isInstance(astNode))
+        if (patNodeASTType != null && !fAccessorAdapter.isInstanceOfType(astNode, typeName))
+            return false;
+        if (patNodeTargetType != null && !patNodeTargetType.getIDENTIFIER().toString().equals(fAccessorAdapter.getValue(AccessorAdapter.TARGET_TYPE, astNode)))
             return false;
         if (!checkConstraints(patternNode))
             return false;
+        ChildList patChildren= patternNode.getChildList();
+        Object[] astChildren= fAccessorAdapter.getChildren(astNode);
+        for(int i= 0; i < patChildren.size(); i++) {
+            Child patChild= patChildren.getChildAt(i);
+
+            int j= 0;
+            for(; j < astChildren.length; j++) {
+                if (doMatch(patChild.getNode(), astChildren[j], match))
+                    break;
+            }
+            if (j == astChildren.length)
+                return false;
+        }
         if (patternNode.getname() != null)
             match.addBinding(patternNode.getname().getIDENTIFIER().toString(), astNode);
         match.fMatchNode= astNode;
@@ -117,9 +140,9 @@ public class Matcher {
                         throw new Exception("Unable to evaluate operator: " + op.toString());
                     }
                 } else if (constraint instanceof BoundConstraint) {
-                    BoundConstraint cons= (BoundConstraint) constraint;
-                    IBound lb= cons.getlowerBound();
-                    IBound ub= cons.getupperBound();
+//                    BoundConstraint cons= (BoundConstraint) constraint;
+//                    IBound lb= cons.getlowerBound();
+//                    IBound ub= cons.getupperBound();
                 }
             }
         }
