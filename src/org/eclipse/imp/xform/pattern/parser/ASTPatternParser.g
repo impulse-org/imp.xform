@@ -12,8 +12,15 @@ $Globals
 $End
 
 $Headers
-    /.private static AccessorAdapter fAccessorAdapter;
-      public static AccessorAdapter getAccessorAdapter() { return fAccessorAdapter; }
+    /.        private static Object[] EMPTY= new Object[0];
+        private static AccessorAdapter fAccessorAdapter= new AccessorAdapter() { // default do-nothing impl
+            public Object getValue(NodeAttribute attribute, Object astNode) { return null; }
+            public Object getValue(String attributeName, Object astNode) { return null; }
+            public Object[] getChildren(Object astNode) { return EMPTY; }
+            public boolean isInstanceOfType(Object astNode, String typeName) { return false; }
+        };
+        public static void setAccessorAdapter(AccessorAdapter a) { fAccessorAdapter= a; }
+        public static AccessorAdapter getAccessorAdapter() { return fAccessorAdapter; }
      ./
 $End
 
@@ -74,7 +81,7 @@ $Rules
     Attribute     ::= NodeAttribute
                     | Literal
     NodeAttribute ::= IDENTIFIER optNodeIdent
-        /. public Object getValue() { return ASTPatternParser.getAccessorAdapter().getValue(this); } ./
+        /. public Object getValue(Object targetNode) { return ASTPatternParser.getAccessorAdapter().getValue(this, targetNode); } ./
     optNodeIdent  ::= '('$ IDENTIFIER ')'$ | $empty
 
     Literal ::= NumberLiteral | StringLiteral
