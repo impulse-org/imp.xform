@@ -4,9 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.HashSet;
 import java.util.Set;
-
 import java_cup.runtime.Symbol;
-import junit.framework.TestCase;
 import polyglot.ast.Node;
 import polyglot.ast.SourceFile;
 import polyglot.ext.jl.ast.NodeFactory_c;
@@ -19,18 +17,19 @@ import polyglot.util.StdErrorQueue;
 import polyglot.visit.HaltingVisitor;
 import polyglot.visit.NodeVisitor;
 import polyglot.visit.PrettyPrinter;
-
 import com.ibm.watson.safari.xform.pattern.matching.Matcher;
 import com.ibm.watson.safari.xform.pattern.matching.PolyglotAccessorAdapter;
 import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
-import com.ibm.watson.safari.xform.pattern.parser.ASTPatternLexer;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
-import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
 
-public class PolyglotJavaTester extends TestCase {
+public class PolyglotJavaTester extends MatchTester {
     private static final TypeSystem_c fTypeSystem= new TypeSystem_c();
 
-    private static SourceFile parseSourceFile(String srcFilePath) throws Exception {
+    protected void dumpSource(Object srcAST) {
+	new PrettyPrinter().printAst((Node) srcAST, new CodeWriter(System.out, 120));
+    }
+
+    protected Object parseSourceFile(String srcFilePath) throws Exception {
         StdErrorQueue eq= new StdErrorQueue(System.err, 100, "__ERRORS__");
         File srcFile= new File(srcFilePath);
         FileSource fileSource= new FileSource(srcFile);
@@ -41,20 +40,13 @@ public class PolyglotJavaTester extends TestCase {
         return (SourceFile) sym.value;
     }
 
-    private static Pattern parsePattern(String patternStr) {
-        ASTPatternLexer lexer= new ASTPatternLexer(patternStr.toCharArray(), "__PATTERN__");
-        ASTPatternParser parser= new ASTPatternParser(lexer.getLexStream());
-
-        lexer.lexer(parser); // Why wasn't this done by the parser ctor?
-        ASTPatternParser.setAccessorAdapter(new PolyglotAccessorAdapter(fTypeSystem));
-
-        Pattern pattern= parser.parser();
-
-        return pattern;
+    protected void setAccessorAdapter() {
+	ASTPatternParser.setAccessorAdapter(new PolyglotAccessorAdapter(fTypeSystem));
     }
 
-    public MatchContext findFirstMatch(final Matcher matcher, Node root) {
+    public MatchContext findFirstMatch(final Matcher matcher, Object astRoot) {
         final MatchContext[] result= new MatchContext[1];
+        Node root= (Node) astRoot;
 
         root.visit(new HaltingVisitor() {
             /* (non-Javadoc)
@@ -77,8 +69,10 @@ public class PolyglotJavaTester extends TestCase {
         return result[0];
     }
 
-    public Set/*<MatchContext>*/ findAllMatches(final Matcher matcher, Node root) {
+    public Set/*<MatchContext>*/ findAllMatches(final Matcher matcher, Object astRoot) {
         final Set/*<MatchContext>*/ result= new HashSet();
+
+        Node root= (Node) astRoot;
 
         root.visit(new NodeVisitor() {
             /* (non-Javadoc)
@@ -95,29 +89,15 @@ public class PolyglotJavaTester extends TestCase {
         return result;
     }
 
-    protected void testHelper(String patternStr, String srcFile) {
-        try {
-            System.out.println("\n**** " + getName() + " ****\n");
-            Pattern pattern= parsePattern(patternStr);
-            SourceFile javaAST= parseSourceFile("resources/" + srcFile);
-
-            Matcher matcher= new Matcher(pattern);
-            MatchContext m= findFirstMatch(matcher, javaAST);
-
-            System.out.println("Pattern = " + pattern);
-            System.out.println("Source  = ");
-            new PrettyPrinter().printAst(javaAST, new CodeWriter(System.out, 120));
-            System.out.println("Result  = " + m);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public void test1() {
         testHelper("[MethodDecl m]", "Simple.jl");
     }
 
     public void test2() {
+        testHelper("[Expr e]", "Simple.jl");
+    }
+
+    public void test2a() {
         testHelper("[Expr e:int]", "Simple.jl");
     }
 
