@@ -86,4 +86,12 @@ public class JikesPGTester extends MatchTester {
     public void test1() {
 	testHelper("[nonTerm n]", "leg.g");
     }
+
+    public void test2() {
+	testHelper("[nonTerm n { name == 'foo' }]", "leg.g");
+    }
+
+    public void testAll1() {
+	testAllHelper("[nonTerm n]", "leg.g");
+    }
 }
