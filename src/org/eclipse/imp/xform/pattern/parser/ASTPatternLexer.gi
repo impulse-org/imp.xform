@@ -38,7 +38,6 @@ $Export
     NOTEQUALS
     DIRECT
     DIRECTEND
-    CLOSURE
 $End
 
 $Terminals
