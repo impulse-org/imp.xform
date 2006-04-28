@@ -1,6 +1,7 @@
 package com.ibm.watson.safari.xform.pattern.matching;
 
 
+import org.jikespg.uide.parser.GetChildrenVisitor;
 import org.jikespg.uide.parser.JikesPGParser.ASTNode;
 import com.ibm.watson.safari.xform.pattern.AccessorAdapter;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
@@ -25,8 +26,9 @@ public class JikesPGAccessorAdapter implements AccessorAdapter {
     }
 
     public Object[] getChildren(Object astNode) {
-        // TODO Auto-generated method stub
-        return null;
+	GetChildrenVisitor v= new GetChildrenVisitor();
+	((ASTNode) astNode).accept(v);
+        return v.getChildren();
     }
 
     public boolean isInstanceOfType(Object astNode, String typeName) {
