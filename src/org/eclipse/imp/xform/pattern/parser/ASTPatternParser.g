@@ -65,7 +65,7 @@ $Rules
     optConstraintList ::= $empty
                         | '{'$ ConstraintList '}'$
 
-    ConstraintList$$Constraint ::= $empty
+    ConstraintList$$Constraint ::= Constraint
                                  | ConstraintList ',' Constraint
 
     Constraint ::= OperatorConstraint
@@ -90,10 +90,9 @@ $Rules
     StringLiteral ::= STRING$valueStr
         /. public Object getValue() { return getvalueStr().toString(); } ./
 
-    Operator  ::= Equals | NotEquals
-    Equals    ::= '=='$
+    Operator  ::= '=='$
         /. public boolean evaluate(Object lhs, Object rhs) { return lhs.equals(rhs); } ./
-    NotEquals ::= '!='$
+                | '!='$
         /. public boolean evaluate(Object lhs, Object rhs) { return !lhs.equals(rhs); } ./
 
     ChildList$$Child ::= $empty
