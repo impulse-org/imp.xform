@@ -52,5 +52,28 @@ public abstract class MatchTester extends TestCase {
         }
     }
 
+    protected void testAllHelper(String patternStr, String srcFile) {
+        try {
+            System.out.println("\n**** " + getName() + " ****\n");
+            Pattern pattern= parsePattern(patternStr);
+
+            assertNotNull("No AST produced for AST pattern!", pattern);
+
+            Object srcAST= parseSourceFile("resources/" + srcFile);
+    
+            assertNotNull("No AST produced for target source file!", srcAST);
+
+            Matcher matcher= new Matcher(pattern);
+            Set/*<MatchContext>*/ matches= findAllMatches(matcher, srcAST);
+
+            System.out.println("Pattern = " + pattern);
+            System.out.println("Source  = ");
+            dumpSource(srcAST);
+            System.out.println("Result  = " + matches);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     protected abstract void dumpSource(Object astRoot);
 }
