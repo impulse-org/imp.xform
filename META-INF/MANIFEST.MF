@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SAFARI Transformation Toolkit
-Bundle-SymbolicName: com.ibm.watson.safari.xform
+Bundle-SymbolicName: com.ibm.watson.safari.xform; singleton:=true
 Bundle-Version: 1.0.0
 Bundle-Activator: com.ibm.watson.safari.xform.XformPlugin
 Bundle-Vendor: rfuhrer@watson.ibm.com
@@ -12,5 +12,8 @@ Require-Bundle: org.eclipse.ui,
  polyglot2,
  org.junit,
  org.jikespg.uide,
- org.eclipse.uide.runtime
+ org.eclipse.uide.runtime,
+ org.eclipse.search,
+ org.eclipse.ui.workbench.texteditor,
+ org.eclipse.jface.text
 Eclipse-AutoStart: true
