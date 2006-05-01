@@ -8,19 +8,35 @@ $Define
 $End
 
 $Globals
-    /.import com.ibm.watson.safari.xform.pattern.AccessorAdapter;./
+    /.import java.util.Collections;
+    import java.util.Set;
+    import com.ibm.watson.safari.xform.pattern.ASTAdapter;
+    import com.ibm.watson.safari.xform.pattern.matching.Matcher;
+    import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;./
 $End
 
 $Headers
     /.        private static Object[] EMPTY= new Object[0];
-        private static AccessorAdapter fAccessorAdapter= new AccessorAdapter() { // default do-nothing impl
+        private static ASTAdapter fASTAdapter= new ASTAdapter() { // default do-nothing impl
             public Object getValue(NodeAttribute attribute, Object astNode) { return null; }
             public Object getValue(String attributeName, Object astNode) { return null; }
             public Object[] getChildren(Object astNode) { return EMPTY; }
             public boolean isInstanceOfType(Object astNode, String typeName) { return false; }
+            public Set findAllMatches(Matcher matcher, Object astRoot) {
+                return Collections.EMPTY_SET;
+            }
+            public MatchContext findNextMatch(Matcher matcher, Object astRoot, int offset) {
+                return null;
+            }
+            public int getPosition(Object astNode) {
+                return 0;
+            }
+            public int getLength(Object astNode) {
+                return 0;
+            }
         };
-        public static void setAccessorAdapter(AccessorAdapter a) { fAccessorAdapter= a; }
-        public static AccessorAdapter getAccessorAdapter() { return fAccessorAdapter; }
+        public static void setASTAdapter(ASTAdapter a) { fASTAdapter= a; }
+        public static ASTAdapter getASTAdapter() { return fASTAdapter; }
      ./
 $End
 
@@ -81,7 +97,7 @@ $Rules
     Attribute     ::= NodeAttribute
                     | Literal
     NodeAttribute ::= IDENTIFIER optNodeIdent
-        /. public Object getValue(Object targetNode) { return ASTPatternParser.getAccessorAdapter().getValue(this, targetNode); } ./
+        /. public Object getValue(Object targetNode) { return ASTPatternParser.getASTAdapter().getValue(this, targetNode); } ./
     optNodeIdent  ::= '('$ IDENTIFIER ')'$ | $empty
 
     Literal ::= NumberLiteral | StringLiteral
