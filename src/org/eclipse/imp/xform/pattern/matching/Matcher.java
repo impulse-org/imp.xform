@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.ibm.watson.safari.xform.pattern.AccessorAdapter;
+import com.ibm.watson.safari.xform.pattern.ASTAdapter;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.BoundConstraint;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Child;
@@ -27,7 +27,7 @@ import com.ibm.watson.safari.xform.pattern.parser.Ast.optTargetType;
 public class Matcher {
     private Pattern fPattern;
 
-    private AccessorAdapter fAccessorAdapter= ASTPatternParser.getAccessorAdapter();
+    private ASTAdapter fASTAdapter= ASTPatternParser.getASTAdapter();
 
     public static class MatchContext {
         private Object fRoot;
@@ -40,13 +40,16 @@ public class Matcher {
         public Object getRoot() {
             return fRoot;
         }
-        public void setMatchRoot(Object node) {
+        /*package*/ void setMatchNode(Object node) {
             fMatchNode= node;
         }
         public Object getMatchNode() {
             return fMatchNode;
         }
-        public void addBinding(String varName, Object astNode) {
+        public Map/*<String, Object astNode>*/ getBindings() {
+	    return fBindings;
+	}
+        /*package*/ void addBinding(String varName, Object astNode) {
             fBindings.put(varName, astNode);
         }
         public String toString() {
@@ -74,6 +77,8 @@ public class Matcher {
     }
 
     public MatchContext match(Object ast) {
+	if (fPattern == null)
+	    return null;
         try {
             MatchContext m= new MatchContext(ast);
 
@@ -90,14 +95,14 @@ public class Matcher {
         optTargetType patNodeTargetType= patternNode.gettargetType();
         String typeName= patNodeASTType.getIDENTIFIER().toString();
 
-        if (patNodeASTType != null && !fAccessorAdapter.isInstanceOfType(astNode, typeName))
+        if (patNodeASTType != null && !fASTAdapter.isInstanceOfType(astNode, typeName))
             return false;
-        if (patNodeTargetType != null && !patNodeTargetType.getIDENTIFIER().toString().equals(fAccessorAdapter.getValue(AccessorAdapter.TARGET_TYPE, astNode)))
+        if (patNodeTargetType != null && !patNodeTargetType.getIDENTIFIER().toString().equals(fASTAdapter.getValue(ASTAdapter.TARGET_TYPE, astNode)))
             return false;
         if (!checkConstraints(patternNode))
             return false;
         ChildList patChildren= patternNode.getChildList();
-        Object[] astChildren= fAccessorAdapter.getChildren(astNode);
+        Object[] astChildren= fASTAdapter.getChildren(astNode);
         for(int i= 0; i < patChildren.size(); i++) {
             Child patChild= patChildren.getChildAt(i);
 
