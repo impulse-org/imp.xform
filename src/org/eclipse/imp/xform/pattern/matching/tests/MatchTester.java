@@ -2,6 +2,7 @@ package com.ibm.watson.safari.xform.pattern.matching.tests;
 
 import java.util.Set;
 import junit.framework.TestCase;
+import com.ibm.watson.safari.xform.pattern.ASTAdapter;
 import com.ibm.watson.safari.xform.pattern.matching.Matcher;
 import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternLexer;
@@ -9,11 +10,10 @@ import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
 
 public abstract class MatchTester extends TestCase {
-    public abstract Set findAllMatches(final Matcher matcher, Object astRoot);
+    private ASTAdapter fAdapter;
 
-    public abstract MatchContext findFirstMatch(final Matcher matcher, Object astRoot);
 
-    protected abstract void setAccessorAdapter();
+    protected abstract ASTAdapter getASTAdapter();
 
     protected abstract Object parseSourceFile(String srcFilePath) throws Exception;
 
@@ -22,7 +22,7 @@ public abstract class MatchTester extends TestCase {
         ASTPatternParser parser= new ASTPatternParser(lexer.getLexStream());
     
         lexer.lexer(parser); // Why wasn't this done by the parser ctor?
-        setAccessorAdapter();
+        ASTPatternParser.setASTAdapter(fAdapter);
     
         Pattern pattern= parser.parser();
     
@@ -32,6 +32,8 @@ public abstract class MatchTester extends TestCase {
     protected void testHelper(String patternStr, String srcFile) {
         try {
             System.out.println("\n**** " + getName() + " ****\n");
+            fAdapter= getASTAdapter();
+
             Pattern pattern= parsePattern(patternStr);
 
             assertNotNull("No AST produced for AST pattern!", pattern);
@@ -41,8 +43,8 @@ public abstract class MatchTester extends TestCase {
             assertNotNull("No AST produced for target source file!", srcAST);
 
             Matcher matcher= new Matcher(pattern);
-            MatchContext m= findFirstMatch(matcher, srcAST);
-    
+            MatchContext m= fAdapter.findNextMatch(matcher, srcAST, 0);
+
             System.out.println("Pattern = " + pattern);
             System.out.println("Source  = ");
             dumpSource(srcAST);
@@ -64,7 +66,7 @@ public abstract class MatchTester extends TestCase {
             assertNotNull("No AST produced for target source file!", srcAST);
 
             Matcher matcher= new Matcher(pattern);
-            Set/*<MatchContext>*/ matches= findAllMatches(matcher, srcAST);
+            Set/*<MatchContext>*/ matches= fAdapter.findAllMatches(matcher, srcAST);
 
             System.out.println("Pattern = " + pattern);
             System.out.println("Source  = ");

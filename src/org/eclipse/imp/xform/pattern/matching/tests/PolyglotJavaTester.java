@@ -2,8 +2,6 @@ package com.ibm.watson.safari.xform.pattern.matching.tests;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.HashSet;
-import java.util.Set;
 import java_cup.runtime.Symbol;
 import polyglot.ast.Node;
 import polyglot.ast.SourceFile;
@@ -14,13 +12,9 @@ import polyglot.ext.jl.types.TypeSystem_c;
 import polyglot.frontend.FileSource;
 import polyglot.util.CodeWriter;
 import polyglot.util.StdErrorQueue;
-import polyglot.visit.HaltingVisitor;
-import polyglot.visit.NodeVisitor;
 import polyglot.visit.PrettyPrinter;
-import com.ibm.watson.safari.xform.pattern.matching.Matcher;
-import com.ibm.watson.safari.xform.pattern.matching.PolyglotAccessorAdapter;
-import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
-import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
+import com.ibm.watson.safari.xform.pattern.ASTAdapter;
+import com.ibm.watson.safari.xform.pattern.matching.PolyglotASTAdapter;
 
 public class PolyglotJavaTester extends MatchTester {
     private static final TypeSystem_c fTypeSystem= new TypeSystem_c();
@@ -40,53 +34,8 @@ public class PolyglotJavaTester extends MatchTester {
         return (SourceFile) sym.value;
     }
 
-    protected void setAccessorAdapter() {
-	ASTPatternParser.setAccessorAdapter(new PolyglotAccessorAdapter(fTypeSystem));
-    }
-
-    public MatchContext findFirstMatch(final Matcher matcher, Object astRoot) {
-        final MatchContext[] result= new MatchContext[1];
-        Node root= (Node) astRoot;
-
-        root.visit(new HaltingVisitor() {
-            /* (non-Javadoc)
-             * @see polyglot.visit.NodeVisitor#enter(polyglot.ast.Node)
-             */
-            public NodeVisitor enter(Node n) {
-                if (result[0] != null)
-                    bypass(n);
-                else {
-                    MatchContext m= matcher.match(n);
-
-                    if (m != null) {
-                        result[0]= m;
-                        bypass(n);
-                    }
-                }
-                return this;
-            }
-        });
-        return result[0];
-    }
-
-    public Set/*<MatchContext>*/ findAllMatches(final Matcher matcher, Object astRoot) {
-        final Set/*<MatchContext>*/ result= new HashSet();
-
-        Node root= (Node) astRoot;
-
-        root.visit(new NodeVisitor() {
-            /* (non-Javadoc)
-             * @see polyglot.visit.NodeVisitor#enter(polyglot.ast.Node)
-             */
-            public NodeVisitor enter(Node n) {
-                MatchContext m= matcher.match(n);
-
-                if (m != null)
-                    result.add(m);
-                return this;
-            }
-        });
-        return result;
+    protected ASTAdapter getASTAdapter() {
+	return new PolyglotASTAdapter(fTypeSystem);
     }
 
     public void test1() {
