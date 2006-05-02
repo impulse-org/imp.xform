@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.search.searchPages">
+      <page
+            class="com.ibm.watson.safari.xform.search.ASTSearchPage"
+            id="com.ibm.watson.safari.xform.astSearchPage"
+            label="AST Search"/>
+   </extension>
+   <extension
+         point="org.eclipse.search.searchResultViewPages">
+      <viewPage
+            class="com.ibm.watson.safari.xform.search.ASTSearchResultPage"
+            id="com.ibm.watson.safari.xform.astSearchViewPage"
+            searchResultClass="com.ibm.watson.safari.xform.search.ASTSearchResult"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="com.ibm.watson.safari.xform.actionSet"
+            label="AST Transformations"
+            visible="true">
+         <action
+               class="com.ibm.watson.safari.xform.search.ASTFindReplaceAction"
+               definitionId="com.ibm.watson.safari.xform.findReplace"
+               id="com.ibm.watson.safari.xform.astFindReplaceAction"
+               label="AST Find/Replace..."
+               menubarPath="Edit/additions"
+               style="push"
+               toolbarPath="edit"/>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="com.ibm.watson.safari.xform.category"
+            name="AST Transformation"/>
+      <command
+            category="com.ibm.watson.safari.xform.category"
+            id="com.ibm.watson.safari.xform.findReplace"
+            name="AST Find/Replace"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="com.ibm.watson.safari.xform.findReplace"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M3+M1+R"/>
+   </extension>
+
+</plugin>
