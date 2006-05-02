@@ -101,8 +101,10 @@ public class Matcher {
             return false;
         if (!checkConstraints(patternNode, astNode))
             return false;
+
         ChildList patChildren= patternNode.getChildList();
         Object[] astChildren= fASTAdapter.getChildren(astNode);
+
         for(int i= 0; i < patChildren.size(); i++) {
             Child patChild= patChildren.getChildAt(i);
 
