@@ -91,11 +91,11 @@ $Terminals
     LeftParen    ::= '('
     RightParen   ::= ')'
     Equal        ::= '='
-    Ellipsis     ::= '...'
-    NotEquals    ::= '!='
-    Equals       ::= '=='
-    Direct       ::= '|-'
-    DirectEnd    ::= '\-'
+--    Ellipsis     ::= '...'
+--    NotEquals    ::= '!='
+--    Equals       ::= '=='
+--    Direct       ::= '|-'
+--    DirectEnd    ::= '\-'
 $End
 
 $Start
@@ -196,31 +196,31 @@ $Rules
           $EndJava
         ./
 
-    Token ::= '=='
+    Token ::= '=' '='
         /.$BeginJava
                     makeToken($_EQUALS);
           $EndJava
         ./
 
-    Token ::= '!='
+    Token ::= '!' '='
         /.$BeginJava
                     makeToken($_NOTEQUALS);
           $EndJava
         ./
 
-    Token ::= '|-'
+    Token ::= '|' '-'
         /.$BeginJava
                     makeToken($_DIRECT);
           $EndJava
         ./
 
-    Token ::= '\-'
+    Token ::= '\' '-'
         /.$BeginJava
                     makeToken($_DIRECTEND);
           $EndJava
         ./
 
-    Token ::= '...'
+    Token ::= '.' '.' '.'
         /.$BeginJava
                     makeToken($_ELLIPSIS);
           $EndJava
@@ -243,7 +243,7 @@ $Rules
     string ::= stringPrefix "'"
 
     stringPrefix ::= "'"
-                 | string notQuote
+                 | stringPrefix notQuote
 
     white ::= whiteChar
           | white whiteChar
