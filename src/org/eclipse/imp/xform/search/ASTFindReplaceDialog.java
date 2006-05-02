@@ -12,8 +12,6 @@ import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
-import org.eclipse.jface.text.TextSelection;
-import org.eclipse.jface.text.TextUtilities;
 import org.eclipse.jface.text.contentassist.IContentAssistant;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -127,14 +125,12 @@ public class ASTFindReplaceDialog extends Dialog {
 	fDialogPositionInit= null;
 	fFindHistory= new ArrayList(HISTORY_SIZE - 1);
 	fReplaceHistory= new ArrayList(HISTORY_SIZE - 1);
-	//	fWrapInit= false;
-	//	fCaseInit= false;
-	//	fIsRegExInit= false;
-	//	fWholeWordInit= false;
-	//	fIncrementalInit= false;
-	//	fGlobalInit= true;
-	//	fForwardInit= true;
-	//	readConfiguration();
+	fWrapInit= false;
+	// fIsRegExInit= false;
+	fIncrementalInit= false;
+	fGlobalInit= true;
+	fForwardInit= true;
+	readConfiguration();
 	setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
 	setBlockOnOpen(false);
 	ASTPatternParser.setASTAdapter(fAdapter);
@@ -531,7 +527,7 @@ public class ASTFindReplaceDialog extends Dialog {
 	fFindField.addModifyListener(fFindModifyListener);
 	updateCombo(fReplaceField, fReplaceHistory);
 	// get find string
-	initFindStringFromSelection();
+	initFindString();
 	// set dialog position
 	if (fDialogPositionInit != null)
 	    shell.setBounds(fDialogPositionInit);
@@ -544,45 +540,19 @@ public class ASTFindReplaceDialog extends Dialog {
      * text in the Find field based on the selection found in the
      * action's target.
      */
-    private void initFindStringFromSelection() {
+    private void initFindString() {
 	if (fTarget != null && okToUse(fFindField)) {
-	    String selection= getSelectionString();
 	    fFindField.removeModifyListener(fFindModifyListener);
-	    if (selection != null) {
-		fFindField.setText(selection);
-		if (!selection.equals(fTarget.getSelectionText())) {
-		    useSelectedLines(true);
-		    fGlobalRadioButton.setSelection(false);
-		    fSelectedRangeRadioButton.setSelection(true);
-		    fUseSelectedLines= true;
-		}
-	    } else {
-		if ("".equals(fFindField.getText())) { //$NON-NLS-1$
-		    if (fFindHistory.size() > 0)
-			fFindField.setText((String) fFindHistory.get(0));
-		    else
-			fFindField.setText(""); //$NON-NLS-1$
-		}
+	    if ("".equals(fFindField.getText())) { //$NON-NLS-1$
+		if (fFindHistory.size() > 0)
+		    fFindField.setText((String) fFindHistory.get(0));
+		else
+		    fFindField.setText(""); //$NON-NLS-1$
 	    }
 	    fFindField.setSelection(new Point(0, fFindField.getText().length()));
 	    fFindField.addModifyListener(fFindModifyListener);
+	    fPattern= parsePattern(getFindString());
 	}
-    }
-
-    /**
-     * Returns the actual selection of the find replace target.
-     * @return the selection of the target
-     */
-    private String getSelectionString() {
-	String selection= fTarget.getSelectionText();
-	if (selection != null && selection.length() > 0) {
-	    int[] info= TextUtilities.indexOf(TextUtilities.DELIMITERS, selection, 0);
-	    if (info[0] > 0)
-		return selection.substring(0, info[0]);
-	    else if (info[0] == -1)
-		return selection;
-	}
-	return null;
     }
 
     /**
@@ -930,8 +900,9 @@ public class ASTFindReplaceDialog extends Dialog {
             int matchPos= fAdapter.getPosition(m.getMatchNode());
             int matchLen= fAdapter.getLength(m.getMatchNode());
 
-            fStatusLabel.setText("Found match");
-            ((ITextEditor) fTarget).getSelectionProvider().setSelection(new TextSelection(matchPos, matchLen));
+            fStatusLabel.setText("Found match at " + matchPos);
+//            ((ITextEditor) fTarget).getSelectionProvider().setSelection(new TextSelection(matchPos, matchLen));
+            ((ITextEditor) fTarget).selectAndReveal(matchPos, matchLen);
         } else
             fStatusLabel.setText("No match");
     }
@@ -1108,7 +1079,7 @@ public class ASTFindReplaceDialog extends Dialog {
 	    fReplaceLabel.setEnabled(isEditable());
 	    fReplaceField.setEnabled(isEditable());
 	    if (initializeFindString) {
-		initFindStringFromSelection();
+		initFindString();
 		fGiveFocusToFindField= true;
 	    }
 	    initIncrementalBaseLocation();
