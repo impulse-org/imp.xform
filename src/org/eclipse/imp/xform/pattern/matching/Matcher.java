@@ -99,7 +99,7 @@ public class Matcher {
             return false;
         if (patNodeTargetType != null && !patNodeTargetType.getIDENTIFIER().toString().equals(fASTAdapter.getValue(ASTAdapter.TARGET_TYPE, astNode)))
             return false;
-        if (!checkConstraints(patternNode))
+        if (!checkConstraints(patternNode, astNode))
             return false;
         ChildList patChildren= patternNode.getChildList();
         Object[] astChildren= fASTAdapter.getChildren(astNode);
@@ -120,7 +120,7 @@ public class Matcher {
         return true;
     }
 
-    private boolean checkConstraints(Node patternNode) throws Exception {
+    private boolean checkConstraints(Node patternNode, Object astNode) throws Exception {
         optConstraintList optConstraints= patternNode.getconstraints();
 
         if (optConstraints != null) {
@@ -136,10 +136,10 @@ public class Matcher {
                     // TODO would be nice if IOperator.evaluate() existed, but there
                     // is currently no way to annotate the JikesPG grammar to do that.
                     if (op instanceof Equals) {
-                        if (!((Equals) op).evaluate(cons.getlhs(), cons.getrhs()))
+                        if (!((Equals) op).evaluate(cons.getlhs(), cons.getrhs(), astNode))
                             return false;
                     } else if (op instanceof NotEquals) {
-                        if (!((NotEquals) op).evaluate(cons.getlhs(), cons.getrhs()))
+                        if (!((NotEquals) op).evaluate(cons.getlhs(), cons.getrhs(), astNode))
                             return false;
                     } else {
                         throw new Exception("Unable to evaluate operator: " + op.toString());
