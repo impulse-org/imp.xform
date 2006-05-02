@@ -163,6 +163,7 @@ public class ASTFindReplaceAction implements IWorkbenchWindowActionDelegate /* e
 	    fgFindReplaceDialogStub= new FindReplaceDialogStub(fWorkbenchPart.getSite());
 	boolean isEditable= false;
 	fTarget= fgFindReplaceDialogStub.fPreviousTarget;
+	if (fTarget == null) return; // Gracefully decline if not an IASTFindReplaceTarget
 	isEditable= fTarget.isEditable();
 	ASTFindReplaceDialog dialog= fgFindReplaceDialogStub.getDialog();
 	dialog.updateTarget(fTarget, isEditable, true);
