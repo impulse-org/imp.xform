@@ -162,10 +162,8 @@ public class ASTFindReplaceAction implements IWorkbenchWindowActionDelegate /* e
 	if (fgFindReplaceDialogStub == null)
 	    fgFindReplaceDialogStub= new FindReplaceDialogStub(fWorkbenchPart.getSite());
 	boolean isEditable= false;
-	if (fWorkbenchPart instanceof UniversalEditor)
-	    isEditable= true;
-//	if (fWorkbenchPart instanceof ITextEditorExtension2)
-//	    isEditable= ((ITextEditorExtension2) fWorkbenchPart).isEditorInputModifiable();
+	fTarget= fgFindReplaceDialogStub.fPreviousTarget;
+	isEditable= fTarget.isEditable();
 	ASTFindReplaceDialog dialog= fgFindReplaceDialogStub.getDialog();
 	dialog.updateTarget(fTarget, isEditable, true);
 	dialog.open();
@@ -179,6 +177,13 @@ public class ASTFindReplaceAction implements IWorkbenchWindowActionDelegate /* e
 	else
 	    fTarget= null;
     }
+
+    // ====================================================================================
+    // From here on down is code taken from FindReplaceAction that supports using the
+    // action as a "contributed" action by the UniversalEditor, but that requires the
+    // UniversalEditor to know about this stuff, which would introduce a cyclic dependency,
+    // until such time as we're ready to move this code into org.eclipse.uide...
+    // ====================================================================================
 
     /**
      * Creates a new find/replace action for the given workbench part.
@@ -215,10 +220,8 @@ public class ASTFindReplaceAction implements IWorkbenchWindowActionDelegate /* e
 	if (fgFindReplaceDialogStub == null)
 	    fgFindReplaceDialogStub= new FindReplaceDialogStub(fWorkbenchPart.getSite());
 	boolean isEditable= false;
-	if (fWorkbenchPart instanceof UniversalEditor)
-	    isEditable= true;
-//	if (fWorkbenchPart instanceof ITextEditorExtension2)
-//	    isEditable= ((ITextEditorExtension2) fWorkbenchPart).isEditorInputModifiable();
+	fTarget= fgFindReplaceDialogStub.fPreviousTarget;
+	isEditable= fTarget.isEditable();
 	ASTFindReplaceDialog dialog= fgFindReplaceDialogStub.getDialog();
 	dialog.updateTarget(fTarget, isEditable, true);
 	dialog.open();
@@ -239,6 +242,5 @@ public class ASTFindReplaceAction implements IWorkbenchWindowActionDelegate /* e
 
     public void dispose() {
 	// TODO Auto-generated method stub
-	
     }
 }
