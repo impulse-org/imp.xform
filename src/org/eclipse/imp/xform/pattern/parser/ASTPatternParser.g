@@ -123,8 +123,14 @@ $Rules
                  rhsValue= ((StringLiteral) rhs).getValue();
                else if (rhs instanceof NumberLiteral)
                  rhsValue= ((NumberLiteral) rhs).getValue();
+               // If either side has no value, let the comparison fail, since the user may write
+               // a node type constraint that is somewhat loose (e.g. "[Expr e { name == 'x' }]"),
+               // and so attributes may be requested that don't actually exist for a given node.
+               if (lhsValue == null || rhsValue == null)
+                 return false;
                return lhsValue.equals(rhsValue);
-           } ./
+           }
+        ./
     NotEquals ::= '!='$
         /. public boolean evaluate(Object lhs, Object rhs, Object node) {
                // Oh well, can't put a method on a non-terminal interface, so fake the polymorphism here
@@ -141,8 +147,14 @@ $Rules
                  rhsValue= ((StringLiteral) rhs).getValue();
                else if (rhs instanceof NumberLiteral)
                  rhsValue= ((NumberLiteral) rhs).getValue();
+               // If either side has no value, let the comparison fail, since the user may write
+               // a node type constraint that is somewhat loose (e.g. "[Expr e { name == 'x' }]"),
+               // and so attributes may be requested that don't actually exist for a given node.
+               if (lhsValue == null || rhsValue == null)
+                 return false;
                return !lhsValue.equals(rhsValue);
-           } ./
+           }
+        ./
 
     ChildList$$Child ::= $empty
                        | ChildList Child
