@@ -103,18 +103,22 @@ public class Matcher {
             return false;
 
         ChildList patChildren= patternNode.getChildList();
-        Object[] astChildren= fASTAdapter.getChildren(astNode);
 
-        for(int i= 0; i < patChildren.size(); i++) {
-            Child patChild= patChildren.getChildAt(i);
+        if (patChildren.size() > 0) {
+            // Don't ask the AST adapter for getChildren() unless the pattern actually has child constraints.
+            Object[] astChildren= fASTAdapter.getChildren(astNode);
 
-            int j= 0;
-            for(; j < astChildren.length; j++) {
-                if (doMatch(patChild.getNode(), astChildren[j], match))
-                    break;
+            for(int i= 0; i < patChildren.size(); i++) {
+        	Child patChild= patChildren.getChildAt(i);
+
+        	int j= 0;
+        	for(; j < astChildren.length; j++) {
+        	    if (doMatch(patChild.getNode(), astChildren[j], match))
+        		break;
+        	}
+        	if (j == astChildren.length)
+        	    return false;
             }
-            if (j == astChildren.length)
-                return false;
         }
         if (patternNode.getname() != null)
             match.addBinding(patternNode.getname().getIDENTIFIER().toString(), astNode);
