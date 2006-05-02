@@ -104,12 +104,45 @@ $Rules
     NumberLiteral ::= NUMBER$valueStr
         /. public Object getValue() { return new Integer(getvalueStr().toString()); } ./
     StringLiteral ::= STRING$valueStr
-        /. public Object getValue() { return getvalueStr().toString(); } ./
+        /. public Object getValue() { String ret= getvalueStr().toString(); return ret.substring(1, ret.length() - 1); } ./
 
-    Operator  ::= '=='$
-        /. public boolean evaluate(Object lhs, Object rhs) { return lhs.equals(rhs); } ./
-                | '!='$
-        /. public boolean evaluate(Object lhs, Object rhs) { return !lhs.equals(rhs); } ./
+    Operator  ::= Equals | NotEquals
+    Equals    ::= '=='$
+        /. public boolean evaluate(Object lhs, Object rhs, Object node) {
+               // Oh well, can't put a method on a non-terminal interface, so fake the polymorphism here
+               Object lhsValue= lhs, rhsValue= rhs;
+               if (lhs instanceof NodeAttribute)
+                 lhsValue= ((NodeAttribute) lhs).getValue(node);
+               else if (lhs instanceof StringLiteral)
+                 lhsValue= ((StringLiteral) lhs).getValue();
+               else if (lhs instanceof NumberLiteral)
+                 lhsValue= ((NumberLiteral) lhs).getValue();
+               if (rhs instanceof NodeAttribute)
+                 rhsValue= ((NodeAttribute) rhs).getValue(node);
+               else if (rhs instanceof StringLiteral)
+                 rhsValue= ((StringLiteral) rhs).getValue();
+               else if (rhs instanceof NumberLiteral)
+                 rhsValue= ((NumberLiteral) rhs).getValue();
+               return lhsValue.equals(rhsValue);
+           } ./
+    NotEquals ::= '!='$
+        /. public boolean evaluate(Object lhs, Object rhs, Object node) {
+               // Oh well, can't put a method on a non-terminal interface, so fake the polymorphism here
+               Object lhsValue= lhs, rhsValue= rhs;
+               if (lhs instanceof NodeAttribute)
+                 lhsValue= ((NodeAttribute) lhs).getValue(node);
+               else if (lhs instanceof StringLiteral)
+                 lhsValue= ((StringLiteral) lhs).getValue();
+               else if (lhs instanceof NumberLiteral)
+                 lhsValue= ((NumberLiteral) lhs).getValue();
+               if (rhs instanceof NodeAttribute)
+                 rhsValue= ((NodeAttribute) rhs).getValue(node);
+               else if (rhs instanceof StringLiteral)
+                 rhsValue= ((StringLiteral) rhs).getValue();
+               else if (rhs instanceof NumberLiteral)
+                 rhsValue= ((NumberLiteral) rhs).getValue();
+               return !lhsValue.equals(rhsValue);
+           } ./
 
     ChildList$$Child ::= $empty
                        | ChildList Child
