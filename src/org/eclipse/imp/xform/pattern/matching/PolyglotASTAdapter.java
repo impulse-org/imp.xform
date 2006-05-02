@@ -1,12 +1,22 @@
 package com.ibm.watson.safari.xform.pattern.matching;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import polyglot.ast.AmbExpr;
+import polyglot.ast.AmbPrefix;
+import polyglot.ast.AmbQualifierNode;
+import polyglot.ast.AmbReceiver;
+import polyglot.ast.ClassDecl;
 import polyglot.ast.Expr;
+import polyglot.ast.Field;
 import polyglot.ast.FieldDecl;
 import polyglot.ast.Local;
 import polyglot.ast.MethodDecl;
 import polyglot.ast.Node;
+import polyglot.ast.ProcedureDecl;
+import polyglot.ast.TypeNode;
 import polyglot.types.ArrayType;
 import polyglot.types.ClassType;
 import polyglot.types.SemanticException;
@@ -14,7 +24,6 @@ import polyglot.types.Type;
 import polyglot.types.TypeSystem;
 import polyglot.visit.HaltingVisitor;
 import polyglot.visit.NodeVisitor;
-
 import com.ibm.watson.safari.xform.pattern.ASTAdapter;
 import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
@@ -30,14 +39,37 @@ public class PolyglotASTAdapter implements ASTAdapter {
         Node node= (Node) astNode;
         if (attribute.getIDENTIFIER().toString().equals("targetType"))
             return getTargetType(node);
-        return null;
+        if (attribute.getIDENTIFIER().toString().equals("name"))
+            return getName(node);
+        throw new IllegalArgumentException("Unsupported attribute: " + attribute);
     }
 
     public Object getValue(String attributeName, Object astNode) {
         Node node= (Node) astNode;
         if (attributeName.equals("targetType"))
             return getTargetType(node);
-        return null;
+        if (attributeName.equals("name"))
+            return getName(node);
+        throw new IllegalArgumentException("Unsupported attribute: " + attributeName);
+    }
+
+    private Object getName(Node node) {
+	if (node instanceof ClassDecl)
+	    return ((ClassDecl) node).name();
+	if (node instanceof FieldDecl)
+	    return ((FieldDecl) node).name();
+	if (node instanceof ProcedureDecl)
+	    return ((ProcedureDecl) node).name();
+	if (node instanceof Field)
+	    return ((Field) node).name();
+	if (node instanceof Local)
+	    return ((Local) node).name();
+	if (node instanceof TypeNode)
+	    return typeNameOf(((TypeNode) node).type());
+	if (node instanceof AmbExpr)
+	    return ((AmbExpr) node).name();
+	return null;
+//      throw new IllegalArgumentException("Node " + node + " has no 'name' attribute");
     }
 
     public Object getTypeByName(String typeName) {
@@ -91,8 +123,27 @@ public class PolyglotASTAdapter implements ASTAdapter {
     }
 
     public Object[] getChildren(Object astNode) {
-        // TODO Auto-generated method stub
-        return null;
+	Node node= (Node) astNode;
+	final List children= new ArrayList();
+	final int level[]= new int[1];
+
+	level[0]= 0;
+	NodeVisitor v= new NodeVisitor() {
+	    public NodeVisitor enter(Node n) {
+		if (level[0] == 1)
+		    children.add(n);
+		// Would be nice to truncate traversal, but not easy with Polyglot visitor API...
+		level[0]++;
+	        return super.enter(n);
+	    }
+	    public Node leave(Node old, Node n, NodeVisitor v) {
+		level[0]--;
+	        return super.leave(old, n, v);
+	    }
+	};
+	
+	node.visit(v);
+        return children.toArray();
     }
 
     public boolean isInstanceOfType(Object astNode, String typeName) {
