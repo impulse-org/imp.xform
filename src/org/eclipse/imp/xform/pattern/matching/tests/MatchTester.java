@@ -12,10 +12,11 @@ import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
 public abstract class MatchTester extends TestCase {
     private ASTAdapter fAdapter;
 
-
     protected abstract ASTAdapter getASTAdapter();
 
     protected abstract Object parseSourceFile(String srcFilePath) throws Exception;
+
+    protected abstract void dumpSource(Object astRoot);
 
     protected Pattern parsePattern(String patternStr) {
         ASTPatternLexer lexer= new ASTPatternLexer(patternStr.toCharArray(), "__PATTERN__");
@@ -49,6 +50,7 @@ public abstract class MatchTester extends TestCase {
             System.out.println("Source  = ");
             dumpSource(srcAST);
             System.out.println("Result  = " + m);
+            assertNotNull("No match for pattern!", m);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,6 +59,8 @@ public abstract class MatchTester extends TestCase {
     protected void testAllHelper(String patternStr, String srcFile) {
         try {
             System.out.println("\n**** " + getName() + " ****\n");
+            fAdapter= getASTAdapter();
+
             Pattern pattern= parsePattern(patternStr);
 
             assertNotNull("No AST produced for AST pattern!", pattern);
@@ -72,10 +76,10 @@ public abstract class MatchTester extends TestCase {
             System.out.println("Source  = ");
             dumpSource(srcAST);
             System.out.println("Result  = " + matches);
+            assertNotNull("Pattern match returned null", matches);
+            assertTrue("No matches for pattern!", matches.size() > 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    protected abstract void dumpSource(Object astRoot);
 }
