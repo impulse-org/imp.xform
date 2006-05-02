@@ -47,10 +47,18 @@ public class PolyglotJavaTester extends MatchTester {
     }
 
     public void test2a() {
+        testHelper("[Expr e { name == 'x' }]", "Simple.jl");
+    }
+
+    public void testTargetType1() {
         testHelper("[Expr e:int]", "Simple.jl");
     }
 
-    public void test3() {
+    public void testChild1() {
+        testHelper("[Assign a [Expr lhs] [Expr rhs]]", "Simple.jl");
+    }
+
+    public void testChild2() {
         testHelper("[Assign a [Variable lhs:int] [Expr rhs:int]]", "Simple.jl");
     }
 }
