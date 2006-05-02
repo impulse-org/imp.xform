@@ -1,11 +1,12 @@
 package com.ibm.watson.safari.xform.pattern.matching;
 
-
 import java.util.HashSet;
 import java.util.Set;
 import org.jikespg.uide.parser.GetChildrenVisitor;
 import org.jikespg.uide.parser.JikesPGParser;
 import org.jikespg.uide.parser.JikesPGParser.ASTNode;
+import org.jikespg.uide.parser.JikesPGParser.nonTerm;
+import org.jikespg.uide.parser.JikesPGParser.terminal;
 import com.ibm.watson.safari.xform.pattern.ASTAdapter;
 import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
@@ -17,6 +18,8 @@ public class JikesPGASTAdapter implements ASTAdapter {
         // until we have a more principled treatment of macro variables.
 //      if (attribute.getIDENTIFIER().toString().equals("targetType"))
 //          return getTargetType(node);
+        if (attribute.getIDENTIFIER().toString().equals("name"))
+            return getName(node);
         return null;
     }
 
@@ -26,7 +29,17 @@ public class JikesPGASTAdapter implements ASTAdapter {
         // until we have a more principled treatment of macro variables.
 //      if (attributeName.equals("targetType"))
 //          return getTargetType(node);
+        if (attributeName.equals("name"))
+            return getName(node);
         return null;
+    }
+
+    private String getName(ASTNode node) {
+        if (node instanceof nonTerm)
+            return ((nonTerm) node).getSYMBOL().toString();
+        if (node instanceof terminal)
+            return ((terminal) node).getterminal_symbol().toString();
+        throw new IllegalArgumentException("AST node type " + node.getClass().getName() + " has no name!");
     }
 
     public Object[] getChildren(Object astNode) {
