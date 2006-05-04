@@ -2,16 +2,15 @@ package com.ibm.watson.safari.xform.pattern.matching;
 
 import java.util.HashSet;
 import java.util.Set;
+import org.eclipse.uide.core.ILanguageService;
 import org.jikespg.uide.parser.GetChildrenVisitor;
 import org.jikespg.uide.parser.JikesPGParser;
 import org.jikespg.uide.parser.JikesPGParser.ASTNode;
 import org.jikespg.uide.parser.JikesPGParser.nonTerm;
 import org.jikespg.uide.parser.JikesPGParser.terminal;
-import com.ibm.watson.safari.xform.pattern.ASTAdapter;
-import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
 
-public class JikesPGASTAdapter implements ASTAdapter {
+public class JikesPGASTAdapter implements IASTAdapter, ILanguageService {
     public Object getValue(NodeAttribute attribute, Object astNode) {
         ASTNode node= (ASTNode) astNode;
         // The "targetType" concept probably won't make sense in JikesPG grammars
@@ -64,7 +63,7 @@ public class JikesPGASTAdapter implements ASTAdapter {
 
         root.accept(new JikesPGParser.AbstractVisitor() {
             public void preVisit(ASTNode n) {
-                MatchContext m= matcher.match(n);
+                MatchResult m= matcher.match(n);
 
                 if (m != null)
                     result.add(m);
@@ -75,8 +74,8 @@ public class JikesPGASTAdapter implements ASTAdapter {
         return result;
     }
 
-    public MatchContext findNextMatch(final Matcher matcher, Object astRoot, final int matchStartPos) {
-        final MatchContext[] result= new MatchContext[1];
+    public MatchResult findNextMatch(final Matcher matcher, Object astRoot, final int matchStartPos) {
+        final MatchResult[] result= new MatchResult[1];
         ASTNode root= (ASTNode) astRoot;
 
         root.accept(new JikesPGParser.AbstractVisitor() {
@@ -88,7 +87,7 @@ public class JikesPGASTAdapter implements ASTAdapter {
                     int nodePos= n.getLeftIToken().getStartOffset();
 
                     if (matchStartPos < nodePos) {
-                	MatchContext m= matcher.match(n);
+                	MatchResult m= matcher.match(n);
 
                 	if (m != null) {
                 	    result[0]= m;
