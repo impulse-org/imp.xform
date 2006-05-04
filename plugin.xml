@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
+   <extension-point id="astAdapter" name="SAFARI AST Adapter" schema="schema/astAdapter.exsd"/>
+
    <extension
          point="org.eclipse.search.searchPages">
       <page
@@ -48,6 +50,12 @@
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M1+R"/>
+   </extension>
+   <extension
+         point="com.ibm.watson.safari.xform.astAdapter">
+         <astAdapter
+            language="JikesPG"
+            class="com.ibm.watson.safari.xform.pattern.matching.JikesPGASTAdapter"/>
    </extension>
 
 </plugin>
