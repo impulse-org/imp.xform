@@ -1,10 +1,6 @@
 package com.ibm.watson.safari.xform.pattern.matching;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
-import com.ibm.watson.safari.xform.pattern.ASTAdapter;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.BoundConstraint;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Child;
@@ -27,60 +23,17 @@ import com.ibm.watson.safari.xform.pattern.parser.Ast.optTargetType;
 public class Matcher {
     private Pattern fPattern;
 
-    private ASTAdapter fASTAdapter= ASTPatternParser.getASTAdapter();
-
-    public static class MatchContext {
-        private Object fRoot;
-        private Object fMatchNode;
-        private Map/*<String, Object astNode>*/ fBindings= new HashMap();
-
-        public MatchContext(Object root) {
-            fRoot= root;
-        }
-        public Object getRoot() {
-            return fRoot;
-        }
-        /*package*/ void setMatchNode(Object node) {
-            fMatchNode= node;
-        }
-        public Object getMatchNode() {
-            return fMatchNode;
-        }
-        public Map/*<String, Object astNode>*/ getBindings() {
-	    return fBindings;
-	}
-        /*package*/ void addBinding(String varName, Object astNode) {
-            fBindings.put(varName, astNode);
-        }
-        public String toString() {
-            StringBuffer buff= new StringBuffer();
-
-            buff.append("node = '");
-            buff.append(fMatchNode);
-            buff.append("'; bindings = { ");
-            for(Iterator iter= fBindings.keySet().iterator(); iter.hasNext(); ) {
-                String metaVarName= (String) iter.next();
-
-                buff.append(metaVarName);
-                buff.append(" => '");
-                buff.append(fBindings.get(metaVarName));
-                buff.append("'");
-                if (iter.hasNext()) buff.append(", ");
-            }
-            buff.append(" }");
-            return buff.toString();
-        }
-    }
+    private IASTAdapter fASTAdapter= ASTPatternParser.getASTAdapter();
 
     public Matcher(Pattern p) {
         fPattern= p;
     }
 
-    public MatchContext match(Object ast) {
+    public MatchResult match(Object ast) {
 	if (fPattern == null)
 	    return null;
         try {
-            MatchContext m= new MatchContext(ast);
+            MatchResult m= new MatchResult(ast);
 
             if (doMatch(fPattern.getNode(), ast, m))
                 return m;
@@ -90,14 +43,14 @@ public class Matcher {
         return null;
     }
 
-    private boolean doMatch(Node patternNode, Object astNode, MatchContext match) throws Exception {
+    private boolean doMatch(Node patternNode, Object astNode, MatchResult match) throws Exception {
         NodeType patNodeASTType= patternNode.gettype();
         optTargetType patNodeTargetType= patternNode.gettargetType();
         String typeName= patNodeASTType.getIDENTIFIER().toString();
 
         if (patNodeASTType != null && !fASTAdapter.isInstanceOfType(astNode, typeName))
             return false;
-        if (patNodeTargetType != null && !patNodeTargetType.getIDENTIFIER().toString().equals(fASTAdapter.getValue(ASTAdapter.TARGET_TYPE, astNode)))
+        if (patNodeTargetType != null && !patNodeTargetType.getIDENTIFIER().toString().equals(fASTAdapter.getValue(IASTAdapter.TARGET_TYPE, astNode)))
             return false;
         if (!checkConstraints(patternNode, astNode))
             return false;
