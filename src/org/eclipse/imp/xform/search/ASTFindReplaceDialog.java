@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -41,13 +42,14 @@ import org.eclipse.ui.contentassist.ContentAssistHandler;
 import org.eclipse.ui.texteditor.IAbstractTextEditorHelpContextIds;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.uide.core.LanguageRegistry;
 import org.eclipse.uide.editor.IASTFindReplaceTarget;
 import org.eclipse.uide.parser.IParseController;
+import org.eclipse.uide.utils.ExtensionPointFactory;
 import com.ibm.watson.safari.xform.XformPlugin;
-import com.ibm.watson.safari.xform.pattern.ASTAdapter;
-import com.ibm.watson.safari.xform.pattern.matching.JikesPGASTAdapter;
+import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
+import com.ibm.watson.safari.xform.pattern.matching.MatchResult;
 import com.ibm.watson.safari.xform.pattern.matching.Matcher;
-import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternLexer;
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
@@ -111,7 +113,7 @@ public class ASTFindReplaceDialog extends Dialog {
      */
     private Color fProposalPopupForegroundColor;
     private IDialogSettings fDialogSettings;
-    private final ASTAdapter fAdapter= new JikesPGASTAdapter();
+    private IASTAdapter fASTAdapter;
     private Pattern fPattern;
 
     /**
@@ -133,7 +135,7 @@ public class ASTFindReplaceDialog extends Dialog {
 	readConfiguration();
 	setShellStyle(SWT.CLOSE | SWT.MODELESS | SWT.BORDER | SWT.TITLE);
 	setBlockOnOpen(false);
-	ASTPatternParser.setASTAdapter(fAdapter);
+	ASTPatternParser.setASTAdapter(fASTAdapter);
     }
 
     /**
@@ -891,14 +893,14 @@ public class ASTFindReplaceDialog extends Dialog {
         Point curSel= fTarget.getSelection();
         int endSelPos= curSel.x + curSel.y;
         Matcher matcher= new Matcher(fPattern);
-        MatchContext m= fAdapter.findNextMatch(matcher, srcAST, endSelPos);
+        MatchResult m= fASTAdapter.findNextMatch(matcher, srcAST, endSelPos);
 
         if (m == null && isWrapSearch())
-            m= fAdapter.findNextMatch(matcher, srcAST, -1);
+            m= fASTAdapter.findNextMatch(matcher, srcAST, -1);
 
         if (m != null) {
-            int matchPos= fAdapter.getPosition(m.getMatchNode());
-            int matchLen= fAdapter.getLength(m.getMatchNode());
+            int matchPos= fASTAdapter.getPosition(m.getMatchNode());
+            int matchLen= fASTAdapter.getLength(m.getMatchNode());
 
             fStatusLabel.setText("Found match at " + matchPos);
 //            ((ITextEditor) fTarget).getSelectionProvider().setSelection(new TextSelection(matchPos, matchLen));
@@ -1073,6 +1075,11 @@ public class ASTFindReplaceDialog extends Dialog {
 		fUseSelectedLines= !fGlobalInit;
 	    }
 	}
+	IEditorInput editorInput= ((ITextEditor) fTarget).getEditorInput();
+
+	fASTAdapter= (IASTAdapter) ExtensionPointFactory.createExtensionPoint(LanguageRegistry.findLanguage(editorInput), XformPlugin.kPluginID, "astAdapter");
+	ASTPatternParser.setASTAdapter(fASTAdapter);
+
 	if (false && okToUse(fIncrementalCheckBox))
 	    fIncrementalCheckBox.setEnabled(true);
 	if (okToUse(fReplaceLabel)) {
