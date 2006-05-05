@@ -4,20 +4,6 @@
    <extension-point id="astAdapter" name="SAFARI AST Adapter" schema="schema/astAdapter.exsd"/>
 
    <extension
-         point="org.eclipse.search.searchPages">
-      <page
-            class="com.ibm.watson.safari.xform.search.ASTSearchPage"
-            id="com.ibm.watson.safari.xform.astSearchPage"
-            label="AST Search"/>
-   </extension>
-   <extension
-         point="org.eclipse.search.searchResultViewPages">
-      <viewPage
-            class="com.ibm.watson.safari.xform.search.ASTSearchResultPage"
-            id="com.ibm.watson.safari.xform.astSearchViewPage"
-            searchResultClass="com.ibm.watson.safari.xform.search.ASTSearchResult"/>
-   </extension>
-   <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
             id="com.ibm.watson.safari.xform.actionSet"
@@ -58,4 +44,23 @@
             class="com.ibm.watson.safari.xform.pattern.matching.JikesPGASTAdapter"/>
    </extension>
 
+   <extension
+         point="org.eclipse.search.searchPages">
+      <page
+            canSearchEnclosingProjects="true"
+            class="com.ibm.watson.safari.xform.search.ASTSearchPage"
+            enabled="true"
+            extensions="g:100"
+            icon="icons/sample.gif"
+            id="com.ibm.watson.safari.xform.searchPage"
+            label="AST Search"
+            showScopeSection="true"/>
+   </extension>
+   <extension
+         point="org.eclipse.search.searchResultViewPages">
+      <viewPage
+            class="com.ibm.watson.safari.xform.search.ASTSearchResultPage"
+            id="com.ibm.watson.safari.xform.searchResultViewPage"
+            searchResultClass="com.ibm.watson.safari.xform.search.ASTSearchResult"/>
+   </extension>  
 </plugin>
