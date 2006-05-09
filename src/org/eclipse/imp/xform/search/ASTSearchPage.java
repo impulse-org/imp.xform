@@ -1,5 +1,7 @@
 package com.ibm.watson.safari.xform.search;
 
+import java.util.Iterator;
+import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.dialogs.DialogPage;
@@ -10,14 +12,19 @@ import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.uide.core.Language;
+import org.eclipse.uide.core.LanguageRegistry;
 
 public class ASTSearchPage extends DialogPage implements ISearchPage {
     private ISearchPageContainer fContainer;
 
     private Text fPattern;
+
+    private Combo fLangCombo;
 
     public ASTSearchPage() {
 	this("AST Search");
@@ -36,7 +43,7 @@ public class ASTSearchPage extends DialogPage implements ISearchPage {
         boolean isWorkspaceScope= fContainer.getSelectedScope() == ISearchPageContainer.WORKSPACE_SCOPE;
         ASTSearchScope scope= isWorkspaceScope ? ASTSearchScope.createWorkspaceScope() :
             ASTSearchScope.createProjectScope(project);
-        ASTSearchQuery query= new ASTSearchQuery(fPattern.getText(), "jikespg", scope);
+        ASTSearchQuery query= new ASTSearchQuery(fPattern.getText(), fLangCombo.getText(), scope);
 
         NewSearchUI.activateSearchResultView();
         NewSearchUI.runQueryInBackground(query);
@@ -54,9 +61,24 @@ public class ASTSearchPage extends DialogPage implements ISearchPage {
         layout.horizontalSpacing= 10;
         result.setLayout(layout);
 
-        Label label= new Label(result, SWT.LEFT);
-        label.setText("AST pattern:"); 
-        label.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 2, 1));
+        Label langLabel= new Label(result, SWT.LEFT);
+        langLabel.setText("Language:"); 
+        langLabel.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 1, 1));
+
+        fLangCombo= new Combo(result, SWT.DROP_DOWN | SWT.READ_ONLY);
+	List/*<Language>*/ langs= LanguageRegistry.getLanguages();
+
+        for(Iterator iter= langs.iterator(); iter.hasNext();) {
+	    Language lang= (Language) iter.next();
+
+	    fLangCombo.add(lang.getName());
+	}
+        fLangCombo.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 1, 1));
+        fLangCombo.select(0);
+
+        Label patLabel= new Label(result, SWT.LEFT);
+        patLabel.setText("AST pattern:"); 
+        patLabel.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 1, 1));
 
         fPattern= new Text(result, SWT.LEFT | SWT.BORDER);
         fPattern.setText("");
