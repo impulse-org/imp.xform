@@ -10,14 +10,14 @@ $End
 $Globals
     /.import java.util.Collections;
     import java.util.Set;
-    import com.ibm.watson.safari.xform.pattern.ASTAdapter;
+    import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
     import com.ibm.watson.safari.xform.pattern.matching.Matcher;
-    import com.ibm.watson.safari.xform.pattern.matching.Matcher.MatchContext;./
+    import com.ibm.watson.safari.xform.pattern.matching.MatchResult;./
 $End
 
 $Headers
     /.        private static Object[] EMPTY= new Object[0];
-        private static ASTAdapter fASTAdapter= new ASTAdapter() { // default do-nothing impl
+        private static IASTAdapter fASTAdapter= new IASTAdapter() { // default do-nothing impl
             public Object getValue(NodeAttribute attribute, Object astNode) { return null; }
             public Object getValue(String attributeName, Object astNode) { return null; }
             public Object[] getChildren(Object astNode) { return EMPTY; }
@@ -25,7 +25,7 @@ $Headers
             public Set findAllMatches(Matcher matcher, Object astRoot) {
                 return Collections.EMPTY_SET;
             }
-            public MatchContext findNextMatch(Matcher matcher, Object astRoot, int offset) {
+            public MatchResult findNextMatch(Matcher matcher, Object astRoot, int offset) {
                 return null;
             }
             public int getPosition(Object astNode) {
@@ -35,8 +35,8 @@ $Headers
                 return 0;
             }
         };
-        public static void setASTAdapter(ASTAdapter a) { fASTAdapter= a; }
-        public static ASTAdapter getASTAdapter() { return fASTAdapter; }
+        public static void setASTAdapter(IASTAdapter a) { fASTAdapter= a; }
+        public static IASTAdapter getASTAdapter() { return fASTAdapter; }
      ./
 $End
 
