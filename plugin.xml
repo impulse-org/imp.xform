@@ -51,7 +51,7 @@
             class="com.ibm.watson.safari.xform.search.ASTSearchPage"
             enabled="true"
             extensions="g:100"
-            icon="icons/sample.gif"
+            icon="icons/astSearchPage.gif"
             id="com.ibm.watson.safari.xform.searchPage"
             label="AST Search"
             showScopeSection="true"/>
