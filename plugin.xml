@@ -16,7 +16,7 @@
                label="AST Find/Replace..."
                menubarPath="Edit/additions"
                style="push"
-               toolbarPath="edit"/>
+               />
       </actionSet>
    </extension>
    <extension
