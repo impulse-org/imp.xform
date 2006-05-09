@@ -10,6 +10,7 @@ import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
+import com.ibm.watson.safari.xform.XformPlugin;
 
 public class ASTSearchResult extends AbstractTextSearchResult implements IFileMatchAdapter, IEditorMatchAdapter {
     private ASTSearchQuery fQuery;
@@ -71,7 +72,6 @@ public class ASTSearchResult extends AbstractTextSearchResult implements IFileMa
     }
 
     public ImageDescriptor getImageDescriptor() {
-	// TODO Auto-generated method stub
-	return null;
+	return XformPlugin.getImageDescriptor("icons/astSearchHit.gif");
     }
 }
