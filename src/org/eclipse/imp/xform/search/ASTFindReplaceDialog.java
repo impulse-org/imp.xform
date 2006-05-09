@@ -1073,12 +1073,16 @@ public class ASTFindReplaceDialog extends Dialog {
 		fGlobalRadioButton.setSelection(fGlobalInit);
 		fSelectedRangeRadioButton.setSelection(!fGlobalInit);
 		fUseSelectedLines= !fGlobalInit;
+	    } else if (fTarget == null) {
+		updateButtonState();
 	    }
 	}
-	IEditorInput editorInput= ((ITextEditor) fTarget).getEditorInput();
+	if (fTarget != null) {
+	    IEditorInput editorInput= ((ITextEditor) fTarget).getEditorInput();
 
-	fASTAdapter= (IASTAdapter) ExtensionPointFactory.createExtensionPoint(LanguageRegistry.findLanguage(editorInput), XformPlugin.kPluginID, "astAdapter");
-	ASTPatternParser.setASTAdapter(fASTAdapter);
+	    fASTAdapter= (IASTAdapter) ExtensionPointFactory.createExtensionPoint(LanguageRegistry.findLanguage(editorInput), XformPlugin.kPluginID, "astAdapter");
+	    ASTPatternParser.setASTAdapter(fASTAdapter);
+	}
 
 	if (false && okToUse(fIncrementalCheckBox))
 	    fIncrementalCheckBox.setEnabled(true);

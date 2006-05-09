@@ -73,12 +73,14 @@ public class ASTFindReplaceAction implements IWorkbenchWindowActionDelegate /* e
 	 * @see IPartListener#partActivated(IWorkbenchPart)
 	 */
 	public void partActivated(IWorkbenchPart part) {
-	    IASTFindReplaceTarget target= part == null ? null : (IASTFindReplaceTarget) part.getAdapter(IASTFindReplaceTarget.class);
+	    IASTFindReplaceTarget target= (part == null) ? null : (IASTFindReplaceTarget) part.getAdapter(IASTFindReplaceTarget.class);
 	    fPreviousPart= fPart;
-	    fPart= target == null ? null : part;
+	    fPart= (target == null) ? null : part;
 	    if (fPreviousTarget != target) {
 		fPreviousTarget= target;
-		if (fDialog != null) {
+		if (target == null)
+		    fDialog.updateTarget(null, false, false);
+		else if (fDialog != null) {
 		    boolean isEditable= false;
 		    if (fPart instanceof UniversalEditor)
 			isEditable= true;
