@@ -1,6 +1,7 @@
 package com.ibm.watson.safari.xform.search;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -9,8 +10,15 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.search.ui.text.AbstractTextSearchViewPage;
 import org.eclipse.search.ui.text.Match;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+import com.ibm.watson.safari.xform.XformPlugin;
 
 public class ASTSearchResultPage extends AbstractTextSearchViewPage {
+    private static final Image sSearchHitImage= XformPlugin.getImageDescriptor("icons/astSearchHit.gif").createImage();
+
     private final class ASTLabelProvider implements ILabelProvider {
         public void addListener(ILabelProviderListener listener) { }
 
@@ -23,14 +31,14 @@ public class ASTSearchResultPage extends AbstractTextSearchViewPage {
         public void removeListener(ILabelProviderListener listener) { }
 
         public Image getImage(Object element) {
-            return null;
+            return sSearchHitImage;
         }
 
         public String getText(Object element) {
             if (element instanceof IFile) {
         	IFile file= (IFile) element;
 
-        	return "<entity in '" + file.getName() + "'>";
+        	return "Matches in '" + file.getFullPath() + "'";
             } else if (element instanceof Match) {
         	Match m= (Match) element;
 
@@ -86,5 +94,11 @@ public class ASTSearchResultPage extends AbstractTextSearchViewPage {
     protected StructuredViewer getViewer() {
         // override so that it's visible in the package.
         return super.getViewer();
+    }
+
+    protected void showMatch(Match match, int currentOffset, int currentLength, boolean activate) throws PartInitException {
+	IEditorPart editorPart= IDE.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(), (IFile) match.getElement());
+
+	editorPart.getEditorSite().getSelectionProvider().setSelection(new TextSelection(match.getOffset(), match.getLength()));
     }
 }
