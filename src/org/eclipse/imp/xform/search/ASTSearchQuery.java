@@ -81,6 +81,9 @@ public class ASTSearchQuery implements ISearchQuery {
                             IFile file= (IFile) resource;
                             String exten= file.getFileExtension();
 
+                            if (resource.isDerived())
+                        	System.out.println("Skipping derived resource " + resource.getFullPath());
+
                             if (exten != null && fLanguage.hasExtension(exten)) {
                         	monitor.subTask("Searching " + file.getFullPath());
                                 String contents= StreamUtils.readStreamContents(file.getContents(), ResourcesPlugin.getEncoding());
