@@ -59,7 +59,7 @@ public class ASTSearchQuery implements ISearchQuery {
         ASTPatternParser parser= new ASTPatternParser(lexer.getLexStream());
     
         lexer.lexer(parser); // Why wasn't this done by the parser ctor?
-	fASTPattern= parser.parser();
+	fASTPattern= (Pattern) parser.parser();
     }
 
     class SystemOutMessageHandler implements IMessageHandler {
@@ -104,7 +104,7 @@ public class ASTSearchQuery implements ISearchQuery {
                                 for(Iterator iterator= matches.iterator(); iterator.hasNext(); ) {
 				    MatchResult match= (MatchResult) iterator.next();
 				    Object matchNode= match.getMatchNode();
-                                    Match textMatch= new Match(file, fASTAdapter.getPosition(matchNode), fASTAdapter.getLength(matchNode));
+                                    Match textMatch= new Match(file, fASTAdapter.getOffset(matchNode), fASTAdapter.getLength(matchNode));
 
                                     fResult.addMatch(textMatch);
 				}

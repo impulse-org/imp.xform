@@ -899,7 +899,7 @@ public class ASTFindReplaceDialog extends Dialog {
             m= fASTAdapter.findNextMatch(matcher, srcAST, -1);
 
         if (m != null) {
-            int matchPos= fASTAdapter.getPosition(m.getMatchNode());
+            int matchPos= fASTAdapter.getOffset(m.getMatchNode());
             int matchLen= fASTAdapter.getLength(m.getMatchNode());
 
             fStatusLabel.setText("Found match at " + matchPos);
@@ -914,7 +914,7 @@ public class ASTFindReplaceDialog extends Dialog {
         ASTPatternParser parser= new ASTPatternParser(lexer.getLexStream());
     
         lexer.lexer(parser); // Why wasn't this done by the parser ctor?
-	return parser.parser();
+	return (Pattern) parser.parser();
     }
 
     protected void performReplaceAll() {
