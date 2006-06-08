@@ -22,4 +22,5 @@ Require-Bundle: org.eclipse.ui,
 Eclipse-AutoStart: true
 Export-Package: com.ibm.watson.safari.xform,
  com.ibm.watson.safari.xform.pattern.matching,
+ com.ibm.watson.safari.xform.pattern.parser,
  com.ibm.watson.safari.xform.pattern.parser.Ast
