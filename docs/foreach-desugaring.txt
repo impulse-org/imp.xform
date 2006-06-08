@@ -1,0 +1,32 @@
+[foreach f
+   [type eltType]
+   [variable v]
+   [expr e:Iterable]
+   [block b]]
+
+   ->
+
+[for [local `tmp ['Iterator'] [call [`e] ['iterator'] []]]
+     [expr [call [`tmp] ['hasNext'] []]]
+     []
+     [block
+         [local `v [cast [`eltType] [call [`tmp] ['next']]]]
+         [`b]]]
+
+--- (MUCH) EASIER ON THE EYES:
+
+foreach(`{type eltType} `{variable v}: `{expr e:Iterable})
+  `{body}
+
+  ->
+
+for(Iterator ``tmp= `e.iterator(); `tmp.hasNext(); ) {
+    `eltType `v = (`eltType) `tmp.next();
+    `body
+}
+
+Need:
+ - support for the "anything" pattern: `*
+ - automatic augmentation of language grammar to incorporate pattern quoting
+ - syntax for "create fresh name", w/ optional prefix/suffix
+ - syntax for ellipsis
