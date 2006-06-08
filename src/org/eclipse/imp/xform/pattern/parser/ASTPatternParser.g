@@ -4,7 +4,7 @@
 %options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=PatternNode
 
 $Define
-    $ast_class /.Pattern./
+    $ast_class /.PatternNode./
 $End
 
 $Globals
@@ -16,25 +16,7 @@ $Globals
 $End
 
 $Headers
-    /.        private static Object[] EMPTY= new Object[0];
-        private static IASTAdapter fASTAdapter= new IASTAdapter() { // default do-nothing impl
-            public Object getValue(NodeAttribute attribute, Object astNode) { return null; }
-            public Object getValue(String attributeName, Object astNode) { return null; }
-            public Object[] getChildren(Object astNode) { return EMPTY; }
-            public boolean isInstanceOfType(Object astNode, String typeName) { return false; }
-            public Set findAllMatches(Matcher matcher, Object astRoot) {
-                return Collections.EMPTY_SET;
-            }
-            public MatchResult findNextMatch(Matcher matcher, Object astRoot, int offset) {
-                return null;
-            }
-            public int getPosition(Object astNode) {
-                return 0;
-            }
-            public int getLength(Object astNode) {
-                return 0;
-            }
-        };
+    /.  private static IASTAdapter fASTAdapter= new ASTAdapterBase() { };
         public static void setASTAdapter(IASTAdapter a) { fASTAdapter= a; }
         public static IASTAdapter getASTAdapter() { return fASTAdapter; }
      ./
@@ -52,6 +34,7 @@ $Terminals
      MINUS        ::= '-'
      TIMES        ::= '*'
      EQUALS       ::= '=='
+     ARROW        ::= '=>'
      NOTEQUALS    ::= '!='
      LEFTPAREN    ::= '('
      RIGHTPAREN   ::= ')'
@@ -66,10 +49,14 @@ $Terminals
 $End
 
 $Start
-    Pattern
+    TopLevel
 $End
 
 $Rules
+    TopLevel ::= RewriteRule | Pattern
+
+    RewriteRule ::= Pattern$lhs '=>'$ Pattern$rhs
+
     Pattern$Pattern ::= Node
 
     Node ::= '['$ NodeType$type optNodeName$name optTargetType$targetType optConstraintList$constraints ChildList ']'$
