@@ -1,6 +1,5 @@
 package com.ibm.watson.safari.xform.pattern.matching;
 
-
 import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.BoundConstraint;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.Child;
@@ -115,5 +114,9 @@ public class Matcher {
 
     public String toString() {
         return "<matcher: " + fPattern + ">";
+    }
+
+    public IASTAdapter getAdapter() {
+	return fASTAdapter;
     }
 }
