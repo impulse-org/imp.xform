@@ -35,6 +35,7 @@ $Export
     MINUS
     TIMES
     EQUALS
+    ARROW
     NOTEQUALS
     DIRECT
     DIRECTEND
@@ -199,6 +200,12 @@ $Rules
     Token ::= '=' '='
         /.$BeginJava
                     makeToken($_EQUALS);
+          $EndJava
+        ./
+
+    Token ::= '=' '>'
+        /.$BeginJava
+                    makeToken($_ARROW);
           $EndJava
         ./
 
