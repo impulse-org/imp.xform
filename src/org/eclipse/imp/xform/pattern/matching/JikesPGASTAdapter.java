@@ -1,16 +1,21 @@
 package com.ibm.watson.safari.xform.pattern.matching;
 
+import java.io.File;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.uide.core.ILanguageService;
 import org.jikespg.uide.parser.GetChildrenVisitor;
 import org.jikespg.uide.parser.JikesPGParser;
 import org.jikespg.uide.parser.JikesPGParser.ASTNode;
 import org.jikespg.uide.parser.JikesPGParser.nonTerm;
 import org.jikespg.uide.parser.JikesPGParser.terminal;
+
+import com.ibm.watson.safari.xform.pattern.parser.ASTAdapterBase;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
 
-public class JikesPGASTAdapter implements IASTAdapter, ILanguageService {
+public class JikesPGASTAdapter extends ASTAdapterBase implements ILanguageService {
     public Object getValue(NodeAttribute attribute, Object astNode) {
         ASTNode node= (ASTNode) astNode;
         // The "targetType" concept probably won't make sense in JikesPG grammars
@@ -103,7 +108,13 @@ public class JikesPGASTAdapter implements IASTAdapter, ILanguageService {
         return result[0];
     }
 
-    public int getPosition(Object astNode) {
+    public String getFile(Object astNode) {
+	ASTNode node= (ASTNode) astNode;
+
+	return node.getLeftIToken().getPrsStream().getFileName();
+    }
+
+    public int getOffset(Object astNode) {
 	ASTNode node= (ASTNode) astNode;
 
 	return node.getLeftIToken().getStartOffset();
@@ -113,5 +124,13 @@ public class JikesPGASTAdapter implements IASTAdapter, ILanguageService {
 	ASTNode node= (ASTNode) astNode;
 
 	return node.getRightIToken().getEndOffset() - node.getLeftIToken().getStartOffset() + 1;
+    }
+
+    public Object construct(String qualName, Object[] children) throws IllegalArgumentException {
+        return super.construct(qualName, children);
+    }
+
+    public Object construct(String qualName, Object[] children, Map attribs) throws IllegalArgumentException {
+        return super.construct(qualName, children, attribs);
     }
 }
