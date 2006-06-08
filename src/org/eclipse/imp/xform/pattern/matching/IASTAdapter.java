@@ -1,5 +1,6 @@
 package com.ibm.watson.safari.xform.pattern.matching;
 
+import java.util.Map;
 import java.util.Set;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
 
@@ -8,6 +9,8 @@ import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
  */
 public interface IASTAdapter {
     public static final String TARGET_TYPE= "targetType";
+
+    public static final String NODE_KIND= "nodeKind";
 
     /**
      * @return the value of the given attribute for the given AST node
@@ -25,10 +28,44 @@ public interface IASTAdapter {
     public Object[] getChildren(Object astNode);
 
     /**
-     * @return true iff the given AST node is of the given named type, which is
-     * typically fully-qualified (though perhaps not if unique when unqualified)
+     * @return fully-qualified name of the type with the given simple name
+     */
+    public String lookupSimpleNodeType(String simpleName);
+
+    /**
+     * @return true iff the given AST node is of the given named type, which
+     * must be fully-qualified
      */
     public boolean isInstanceOfType(Object astNode, String typeName);
+
+    /**
+     * @return true iff the given AST node type is a sub-type of the given named
+     * type <code>maybeSub</code>, which must be fully-qualified
+     */
+    public boolean isSubTypeOf(String maybeSuper, String maybeSub);
+
+    /**
+     * @return the type of AST node for the given AST node, which is suitable
+     * for use with, e.g., isInstanceOfType()
+     */
+    public String getTypeOf(Object astNode);
+
+    /**
+     * @param qualName the fully-qualified name of the AST node type to construct
+     * @param children array of child AST nodes (even if certain "children" may
+     * not be AST nodes in the target AST representation)
+     * @return newly-constructed AST node
+     */
+    public Object construct(String qualName, Object[] children) throws IllegalArgumentException;
+
+    /**
+     * @param qualName the fully-qualified name of the AST node type to construct
+     * @param children array of child AST nodes (even if certain "children" may
+     * not be AST nodes in the target AST representation)
+     * @param attribs map from attribute names to attribute values
+     * @return newly-constructed AST node
+     */
+    public Object construct(String qualName, Object[] children, Map/*<String,Object>*/ attribs) throws IllegalArgumentException;
 
     /**
      * This is essentially a wrapper for the AST traversal surrounding the matching
@@ -70,10 +107,18 @@ public interface IASTAdapter {
 //    public MatchContext findPreviousMatch(Matcher matcher, Object astRoot, int offset);
 
     /**
+     * Returns the file path of the file containing the
+     * source text corresponding to the given AST node <code>astNode</code>.
+     * The path will be the same as what was provided to the AST creator
+     * (e.g. the parser).
+     */
+    public String getFile(Object astNode);
+
+    /**
      * Returns the character offset (not the byte offset) of the first character of
      * source text corresponding to the given AST node <code>astNode</code>.
      */
-    public int getPosition(Object astNode);
+    public int getOffset(Object astNode);
 
     /**
      * Returns the length in characters (not bytes) of the source text
