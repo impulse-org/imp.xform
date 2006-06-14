@@ -3,8 +3,10 @@
  */
 package com.ibm.watson.safari.xform.pattern.parser;
 
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
@@ -66,5 +68,34 @@ public abstract class ASTAdapterBase implements IASTAdapter {
 
     public Object construct(String qualName, Object[] children, Map attribs) throws IllegalArgumentException {
         return null;
+    }
+
+    public Object getChildAtPosition(int pos, Object astNode) {
+        return getChildren(astNode)[pos];
+    }
+
+    public String getChildRoleAtPosition(int pos, String qualNodeType) {
+        try {
+            return Class.forName(qualNodeType).getFields()[pos].getName();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int getPositionOfChildRole(String roleName, String qualNodeType) {
+        try {
+            Field[] fields= Class.forName(qualNodeType).getFields();
+    
+            for(int i= 0; i < fields.length; i++) {
+        	if (fields[i].getName().equals(roleName))
+        	    return i;
+            }
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e);
+        }
+    
+        if (roleName.equals(NODE_KIND) || roleName.equals(TARGET_TYPE))
+            throw new IllegalArgumentException(roleName);
+        throw new NoSuchElementException(roleName);
     }
 }
