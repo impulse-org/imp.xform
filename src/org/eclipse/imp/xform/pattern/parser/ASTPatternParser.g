@@ -84,7 +84,7 @@ $Rules
     Attribute     ::= NodeAttribute
                     | Literal
     NodeAttribute ::= IDENTIFIER optNodeIdent
-        /. public Object getValue(Object targetNode) { return ASTPatternParser.getASTAdapter().getValue(this, targetNode); } ./
+        /. public Object getValue(Object targetNode) { return ASTPatternParser.getASTAdapter().getValue(this._IDENTIFIER.toString(), targetNode); } ./
     optNodeIdent  ::= '('$ IDENTIFIER ')'$ | $empty
 
     Literal ::= NumberLiteral | StringLiteral
