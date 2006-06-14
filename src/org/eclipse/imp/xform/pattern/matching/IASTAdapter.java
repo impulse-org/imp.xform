@@ -13,17 +13,37 @@ public interface IASTAdapter {
     public static final String NODE_KIND= "nodeKind";
 
     /**
-     * @return the value of the given attribute for the given AST node
+     * @return the name of the child role at the given positional index
      */
-    public Object getValue(NodeAttribute attribute, Object astNode);
+    public String getChildRoleAtPosition(int pos, String qualNodeType);
 
     /**
+     * @param roleName refers to a child role, and not a predefined attribute
+     * such as "type" or "kind" (which have no positional index)
+     * @param qualNodeType
+     * @return a positional index, if the roleName is valid
+     * @throws NoSuchElementException if the roleName does not refer to a valid
+     * role for the given AST node type
+     * @throws IllegalArgumentException if the role refers to a predefined attribute
+     * or if the type name is invalid
+     */
+    public int getPositionOfChildRole(String roleName, String qualNodeType);
+
+    /**
+     * @param attributeName refers to a child role or a predefined attribute
+     * such as "type" or "kind"
      * @return the value of the named attribute for the given AST node
      */
     public Object getValue(String attributeName, Object astNode);
 
     /**
-     * @return a possibly empty array of immediate children of the given AST node <code>astNode</code>
+     * @return the value of the child of the given AST node at the given position
+     */
+    public Object getChildAtPosition(int pos, Object astNode);
+
+    /**
+     * @return a possibly empty array of immediate children of the given AST node
+     * <code>astNode</code> in positional order
      */
     public Object[] getChildren(Object astNode);
 
