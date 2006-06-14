@@ -197,7 +197,7 @@ $Rules
           $EndJava
         ./
 
-    Token ::= '=' '='
+    Token ::= '='
         /.$BeginJava
                     makeToken($_EQUALS);
           $EndJava
