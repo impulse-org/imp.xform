@@ -67,11 +67,12 @@ public class JikesPGASTAdapter extends ASTAdapterBase implements ILanguageServic
         ASTNode root= (ASTNode) astRoot;
 
         root.accept(new JikesPGParser.AbstractVisitor() {
-            public void preVisit(ASTNode n) {
+            public boolean preVisit(ASTNode n) {
                 MatchResult m= matcher.match(n);
 
                 if (m != null)
                     result.add(m);
+                return true; // keep looking for all matches
             }
 
 	    public void unimplementedVisitor(String s) { }
@@ -84,10 +85,9 @@ public class JikesPGASTAdapter extends ASTAdapterBase implements ILanguageServic
         ASTNode root= (ASTNode) astRoot;
 
         root.accept(new JikesPGParser.AbstractVisitor() {
-            public void preVisit(ASTNode n) {
+            public boolean preVisit(ASTNode n) {
                 if (result[0] != null)
-//                    bypass(n)
-                    ;
+                    return false; // already have a match
                 else {
                     int nodePos= n.getLeftIToken().getStartOffset();
 
@@ -96,11 +96,11 @@ public class JikesPGASTAdapter extends ASTAdapterBase implements ILanguageServic
 
                 	if (m != null) {
                 	    result[0]= m;
-//                          bypass(n);
+                	    return false; // got a match
                 	}
                     }
                 }
-//                return this;
+                return true; // no match; keep looking
             }
 
 	    public void unimplementedVisitor(String s) { }
