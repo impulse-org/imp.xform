@@ -8,9 +8,27 @@ import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
  * @author rfuhrer@watson.ibm.com
  */
 public interface IASTAdapter {
+    /**
+     * The type of an entity in the target source program, e.g., the declared type of
+     * a variable, or the inferred type of an expression. A construct that does not
+     * produce or declare a value can be considered to have type TARGET_TYPE_VOID.
+     */
     public static final String TARGET_TYPE= "targetType";
 
-    public static final String NODE_KIND= "nodeKind";
+    /**
+     * The name of the AST node type
+     */
+    public static final String KIND= "kind";
+
+    /**
+     * E.g. the name of a method or variable decl/ref
+     */
+    public static final String NAME= "name";
+
+    /**
+     * The void target type (hah! You were probably expecting a more useful JavaDoc comment, weren't you?)
+     */
+    public static final String TARGET_TYPE_VOID= "void";
 
     /**
      * @return the name of the child role at the given positional index
@@ -33,6 +51,7 @@ public interface IASTAdapter {
      * @param attributeName refers to a child role or a predefined attribute
      * such as "type" or "kind"
      * @return the value of the named attribute for the given AST node
+     * TODO handle "child roles"
      */
     public Object getValue(String attributeName, Object astNode);
 
