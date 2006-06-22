@@ -16,29 +16,15 @@ import com.ibm.watson.safari.xform.pattern.parser.ASTAdapterBase;
 import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
 
 public class JikesPGASTAdapter extends ASTAdapterBase implements ILanguageService {
-//    public Object getValue(NodeAttribute attribute, Object astNode) {
-//        ASTNode node= (ASTNode) astNode;
-//        // The "targetType" concept probably won't make sense in JikesPG grammars
-//        // until we have a more principled treatment of macro variables.
-////      if (attribute.getIDENTIFIER().toString().equals("targetType"))
-////          return getTargetType(node);
-//        if (attribute.getIDENTIFIER().toString().equals("name"))
-//            return getName(node);
-//        return null;
-//    }
-
-    public Object getValue(String attributeName, Object astNode) {
-        ASTNode node= (ASTNode) astNode;
+    @Override
+    protected Object getTargetType(Object astNode) {
         // The "targetType" concept probably won't make sense in JikesPG grammars
         // until we have a more principled treatment of macro variables.
-//      if (attributeName.equals("targetType"))
-//          return getTargetType(node);
-        if (attributeName.equals("name"))
-            return getName(node);
-        return null;
+        return super.getTargetType(astNode);
     }
 
-    private String getName(ASTNode node) {
+    protected String getName(Object astNode) {
+	ASTNode node= (ASTNode) astNode;
         if (node instanceof nonTerm)
             return ((nonTerm) node).getSYMBOL().toString();
         if (node instanceof terminal)
