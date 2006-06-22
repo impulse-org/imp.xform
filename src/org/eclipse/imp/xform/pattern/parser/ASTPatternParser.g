@@ -29,6 +29,7 @@ $Terminals
      SEMICOLON    ::= ';'
      COLON        ::= ':'
      COMMA        ::= ','
+     DOT          ::= '.'
      ELLIPSIS     ::= '...'
      PLUS         ::= '+'
      MINUS        ::= '-'
@@ -74,18 +75,26 @@ $Rules
     Constraint ::= OperatorConstraint
                  | BoundConstraint
 
-    OperatorConstraint ::= Attribute$lhs Operator Attribute$rhs
+    OperatorConstraint ::= NodeAttribute$lhs Operator Value$rhs
 
     BoundConstraint ::= '<'$ Bound$lowerBound ':'$ Bound$upperBound '>'$
     Bound           ::= NumericBound | Unbounded
     NumericBound    ::= NUMBER
     Unbounded       ::= '*'
 
-    Attribute     ::= NodeAttribute
+    Value     ::= NodeAttribute
                     | Literal
-    NodeAttribute ::= IDENTIFIER optNodeIdent
-        /. public Object getValue(Object targetNode) { return ASTPatternParser.getASTAdapter().getValue(this._IDENTIFIER.toString(), targetNode); } ./
-    optNodeIdent  ::= '('$ IDENTIFIER ')'$ | $empty
+                    | Node
+
+    NodeAttribute ::= optAttrList IDENTIFIER
+        /. public Object getValue(Object targetNode) {
+               for(int i=0; i < _optAttrList.size(); i++)
+                   targetNode= environment.getASTAdapter().getValue(_optAttrList.getElementAt(i).toString(), targetNode);
+               return environment.getASTAdapter().getValue(_IDENTIFIER.toString(), targetNode);
+           } ./
+    optAttrList$$ident ::= $empty | optAttrList ident '.'$
+
+    ident ::= IDENTIFIER
 
     Literal ::= NumberLiteral | StringLiteral
     NumberLiteral ::= NUMBER$valueStr
