@@ -2,10 +2,10 @@
 -- The AST Pattern KeyWord Lexer
 --
 %options package=com.ibm.watson.safari.xform.pattern.parser
-%options template=UIDE/KeywordTemplate.gi
+%options template=uide/KeywordTemplate.gi
 
 $Include
-    UIDE/KWLexerLowerCaseMap.gi
+    uide/KWLexerLowerCaseMap.gi
 $End
 
 $Export
