@@ -1,5 +1,5 @@
 %options package=com.ibm.watson.safari.xform.pattern.parser
-%options template=UIDE/LexerTemplate.gi
+%options template=uide/LexerTemplate.gi
 %options filter=ASTPatternKWLexer.gi
 
 $Globals
