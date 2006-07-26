@@ -1,5 +1,5 @@
 %options package=com.ibm.watson.safari.xform.pattern.parser
-%options template=UIDE/dtParserTemplate.gi
+%options template=uide/dtParserTemplate.gi
 %options import_terminals=ASTPatternLexer.gi
 %options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=PatternNode
 
