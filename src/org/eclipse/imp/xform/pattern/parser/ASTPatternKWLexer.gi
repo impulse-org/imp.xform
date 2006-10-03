@@ -12,6 +12,7 @@ $Export
     -- List all the keywords the kwlexer will export to the lexer and parser
     typeOf
     targetTypeOf
+    DEFINE
 $End
 
 $Terminals
@@ -27,6 +28,11 @@ $End
 $Rules
     -- The Goal for the parser is a single Keyword
 
+    Keyword ::= d e f i n e
+        /.$BeginAction
+            $setResult($_DEFINE);
+          $EndAction
+        ./
     Keyword ::= t y p e O f
         /.$BeginAction
             $setResult($_typeOf);
