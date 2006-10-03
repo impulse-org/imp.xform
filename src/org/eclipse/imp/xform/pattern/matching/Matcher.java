@@ -45,11 +45,11 @@ public class Matcher {
     private boolean doMatch(Node patternNode, Object astNode, MatchResult match) throws Exception {
         NodeType patNodeASTType= patternNode.gettype();
         optTargetType patNodeTargetType= patternNode.gettargetType();
-        String typeName= patNodeASTType.getIDENTIFIER().toString();
+        String typeName= patNodeASTType.getIDENT().toString();
 
         if (patNodeASTType != null && !fASTAdapter.isInstanceOfType(astNode, typeName))
             return false;
-        if (patNodeTargetType != null && !patNodeTargetType.getIDENTIFIER().toString().equals(fASTAdapter.getValue(IASTAdapter.TARGET_TYPE, astNode)))
+        if (patNodeTargetType != null && !patNodeTargetType.getIDENT().toString().equals(fASTAdapter.getValue(IASTAdapter.TARGET_TYPE, astNode)))
             return false;
         if (!checkConstraints(patternNode, astNode))
             return false;
@@ -73,7 +73,7 @@ public class Matcher {
             }
         }
         if (patternNode.getname() != null)
-            match.addBinding(patternNode.getname().getIDENTIFIER().toString(), astNode);
+            match.addBinding(patternNode.getname().getIDENT().toString(), astNode);
         match.fMatchNode= astNode;
         return true;
     }
