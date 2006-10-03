@@ -22,10 +22,15 @@ $Headers
      ./
 $End
 
+$Identifier
+     IDENT
+$End
+
 $Terminals
-     IDENTIFIER 
+     IDENT
      NUMBER
      STRING
+     DEFINE
      SEMICOLON    ::= ';'
      COLON        ::= ':'
      COMMA        ::= ','
@@ -47,6 +52,8 @@ $Terminals
      DIRECTEND    ::= '\-'
      LESSTHAN     ::= '<'
      GREATERTHAN  ::= '>'
+     SHARP        ::= '#'
+     UNDERSCORE   ::= '_'
 $End
 
 $Start
@@ -54,23 +61,39 @@ $Start
 $End
 
 $Rules
-    TopLevel ::= RewriteRule | Pattern
+    TopLevel ::= RewriteRule | Pattern | FunctionDef
+
+    FunctionDef ::= DEFINE IDENT '('$ FormalArgList ')'$ ScopeBlock
+
+    FormalArgList$$FormalArg ::= FormalArg | FormalArgList ','$ FormalArg
+
+    FormalArg ::= IDENT
 
     RewriteRule ::= Pattern$lhs '=>'$ Pattern$rhs
 
     Pattern$Pattern ::= Node
+                    |   Node ScopeBlock
 
-    Node ::= '['$ NodeType$type optNodeName$name optTargetType$targetType optConstraintList$constraints ChildList ']'$
+    ScopeBlock ::= '{'$ PatternList '}'$
 
-    NodeType      ::= IDENTIFIER
-    optNodeName   ::= IDENTIFIER | $empty
-    optTargetType ::= COLON IDENTIFIER | $empty
+    PatternList$$Pattern ::= Pattern | PatternList Pattern
+
+    Node ::= '['$ NodeType$type optNodeName$name optSharp optTargetType$targetType optConstraintList$constraints ChildList ']'$
+         |   FunctionCall
+
+    FunctionCall ::= 
+
+    optSharp ::= $empty | '#'
+
+    NodeType      ::= IDENT
+    optNodeName   ::= IDENT | $empty
+    optTargetType ::= COLON IDENT | $empty
 
     optConstraintList ::= $empty
                         | '{'$ ConstraintList '}'$
 
     ConstraintList$$Constraint ::= Constraint
-                                 | ConstraintList ',' Constraint
+                                 | ConstraintList ','$ Constraint
 
     Constraint ::= OperatorConstraint
                  | BoundConstraint
@@ -86,15 +109,15 @@ $Rules
                     | Literal
                     | Node
 
-    NodeAttribute ::= optAttrList IDENTIFIER
+    NodeAttribute ::= optAttrList IDENT
         /. public Object getValue(Object targetNode) {
                for(int i=0; i < _optAttrList.size(); i++)
                    targetNode= environment.getASTAdapter().getValue(_optAttrList.getElementAt(i).toString(), targetNode);
-               return environment.getASTAdapter().getValue(_IDENTIFIER.toString(), targetNode);
+               return environment.getASTAdapter().getValue(_IDENT.toString(), targetNode);
            } ./
     optAttrList$$ident ::= $empty | optAttrList ident '.'$
 
-    ident ::= IDENTIFIER
+    ident ::= IDENT
 
     Literal ::= NumberLiteral | StringLiteral
     NumberLiteral ::= NUMBER$valueStr
