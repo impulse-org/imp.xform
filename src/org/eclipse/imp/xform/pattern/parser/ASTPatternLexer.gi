@@ -16,9 +16,17 @@ $Include
     uide/LexerBasicMap.gi
 $End
 
+$Identifier
+    IDENT
+$End
+
+$Define
+    $_IDENTIFIER /.$_IDENT./
+$End
+
 $Export
     SINGLE_LINE_COMMENT
-    IDENTIFIER
+    IDENT
     NUMBER
     STRING
     SEMICOLON
