@@ -2,6 +2,7 @@ package com.ibm.watson.safari.xform.search;
 
 import java.util.Iterator;
 import java.util.Set;
+import lpg.lpgjavaruntime.IMessageHandler;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -17,7 +18,6 @@ import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.text.Match;
 import org.eclipse.uide.core.Language;
 import org.eclipse.uide.core.LanguageRegistry;
-import org.eclipse.uide.editor.IMessageHandler;
 import org.eclipse.uide.parser.IParseController;
 import org.eclipse.uide.runtime.RuntimePlugin;
 import org.eclipse.uide.utils.ExtensionPointFactory;
