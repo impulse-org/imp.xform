@@ -37,12 +37,6 @@
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M1+R"/>
    </extension>
-   <extension
-         point="com.ibm.watson.safari.xform.astAdapter">
-         <astAdapter
-            language="JikesPG"
-            class="com.ibm.watson.safari.xform.pattern.matching.JikesPGASTAdapter"/>
-   </extension>
 
    <extension
          point="org.eclipse.search.searchPages">
