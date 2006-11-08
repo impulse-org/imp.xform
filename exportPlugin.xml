@@ -21,6 +21,7 @@
 		<property name="temp.folder" value="${basedir}/temp.folder"/>
 		<property name="lpg.location" value="../lpg"/>
 		<property name="lpg.executable" location="${lpg.location}/bin/lpg-${baseos}_${os.arch}"/>
+		<property name="lpg.templates" location="${lpg.location}/templates"/>
 	</target>
 
 	<target name="properties" if="eclipse.running">
@@ -39,7 +40,7 @@
 		<echo message="Running JikesPG to generate parser and lexer"/>
 		<exec executable="${lpg.executable}" dir="src/com/ibm/watson/safari/xform/pattern/parser"
 		      failonerror="true" output="ASTPatternParser.log">
-			<arg line="-include-directory=../../../../../../../../../lpg/templates"/>
+			<arg line="-include-directory=${lpg.templates}"/>
 			<arg line="ASTPatternParser.g"/>
 		</exec>
 		<!-- compile the source code -->
@@ -52,7 +53,6 @@
 				<pathelement path="../lpg/lpg_${plugin.version}.jar"/>
 				<pathelement path="../polyglot2/polyglot2_${plugin.version}.jar"/>
 				<pathelement path="../org.eclipse.uide.runtime/org.eclipse.uide.runtime_${plugin.version}.jar"/>
-				<pathelement path="../org.jikespg.uide/org.jikespg.uide_${plugin.version}.jar"/>
 				<pathelement path="${eclipse.build.path}"/>
 			</classpath>
 			<src path="src/"/>
