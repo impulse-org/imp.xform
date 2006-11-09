@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SAFARI Transformation Toolkit
 Bundle-SymbolicName: com.ibm.watson.safari.xform; singleton:=true
-Bundle-Version: 1.0.34
+Bundle-Version: 1.0.35
 Bundle-Activator: com.ibm.watson.safari.xform.XformPlugin
 Bundle-Vendor: rfuhrer@watson.ibm.com
 Bundle-Localization: plugin
