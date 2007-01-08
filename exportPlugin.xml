@@ -51,7 +51,7 @@
 			<compilerarg line="${compilerArg}"/>
 			<classpath>
 				<pathelement path="../lpg/lpg_${plugin.version}.jar"/>
-				<pathelement path="../polyglot2/polyglot2_${plugin.version}.jar"/>
+				<pathelement path="../polyglot/lib/polyglot-epl.jar"/>
 				<pathelement path="../org.eclipse.uide.runtime/org.eclipse.uide.runtime_${plugin.version}.jar"/>
 				<pathelement path="${eclipse.build.path}"/>
 			</classpath>
