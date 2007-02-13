@@ -8,7 +8,6 @@ Bundle-Vendor: rfuhrer@watson.ibm.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- lpg,
  org.junit,
  org.eclipse.uide.runtime,
  org.eclipse.search,
@@ -17,7 +16,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources,
  org.eclipse.ui.editors,
  org.eclipse.ui.ide,
- polyglot
+ polyglot,
+ lpg.javaruntime
 Eclipse-AutoStart: true
 Export-Package: com.ibm.watson.safari.xform,
  com.ibm.watson.safari.xform.pattern.matching,
