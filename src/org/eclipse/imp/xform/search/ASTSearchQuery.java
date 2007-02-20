@@ -2,7 +2,9 @@ package com.ibm.watson.safari.xform.search;
 
 import java.util.Iterator;
 import java.util.Set;
-import lpg.javaruntime.IMessageHandler;
+
+import lpg.runtime.IMessageHandler;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
