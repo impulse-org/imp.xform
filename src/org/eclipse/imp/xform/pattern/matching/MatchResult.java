@@ -8,36 +8,63 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class MatchResult {
-    Object fRoot;
+    final Object fRoot;
+    final MatchResult fParent;
+    final Map<String, Object> fBindings= new HashMap<String,Object>();
+
     Object fMatchNode;
-    Map/*<String, Object astNode>*/ fBindings= new HashMap();
 
     public MatchResult(Object root) {
-        fRoot= root;
+        this(root, null);
     }
+
+    public MatchResult(Object root, MatchResult parent) {
+	fRoot= root;
+	fParent= parent;
+    }
+
     public Object getRoot() {
         return fRoot;
     }
+
+    public MatchResult getParent() {
+        return fParent;
+    }
+
     /*package*/ void setMatchNode(Object node) {
         fMatchNode= node;
     }
+
     public Object getMatchNode() {
         return fMatchNode;
     }
-    public Map/*<String, Object astNode>*/ getBindings() {
-        return fBindings;
+
+    public Map<String, Object> localBindings() {
+	return fBindings;
     }
+
+    public Map<String, Object> getBindings() {
+	Map<String, Object> allBindings= new HashMap<String,Object>();
+	MatchResult r= this;
+	while (r != null) {
+	    allBindings.putAll(r.fBindings);
+	    r= r.fParent;
+	}
+        return allBindings;
+    }
+
     /*package*/ void addBinding(String varName, Object astNode) {
         fBindings.put(varName, astNode);
     }
+
     public String toString() {
         StringBuffer buff= new StringBuffer();
 
         buff.append("node = '");
         buff.append(fMatchNode);
         buff.append("'; bindings = { ");
-        for(Iterator iter= fBindings.keySet().iterator(); iter.hasNext(); ) {
-            String metaVarName= (String) iter.next();
+        for(Iterator<String> iter= fBindings.keySet().iterator(); iter.hasNext(); ) {
+            String metaVarName= iter.next();
 
             buff.append(metaVarName);
             buff.append(" => '");
