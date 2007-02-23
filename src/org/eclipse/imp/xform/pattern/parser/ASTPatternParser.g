@@ -10,6 +10,8 @@ $End
 $Globals
     /.import java.util.Collections;
     import java.util.Set;
+    import java.util.Map;
+    import java.util.HashMap;
     import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
     import com.ibm.watson.safari.xform.pattern.matching.Matcher;
     import com.ibm.watson.safari.xform.pattern.matching.MatchResult;./
@@ -19,6 +21,18 @@ $Headers
     /.  private static IASTAdapter fASTAdapter= new ASTAdapterBase() { };
         public static void setASTAdapter(IASTAdapter a) { fASTAdapter= a; }
         public static IASTAdapter getASTAdapter() { return fASTAdapter; }
+
+        public static class SymbolTable {
+            private final Map<String,FunctionDef> fDefinitions= new HashMap<String,FunctionDef>();
+
+            public FunctionDef lookup(String name) {
+                return fDefinitions.get(name);
+            }
+        }
+
+        private final static SymbolTable fSymbolTable= new SymbolTable();
+
+        public static SymbolTable getSymbolTable() { return fSymbolTable; }
      ./
 $End
 
@@ -63,7 +77,7 @@ $End
 $Rules
     TopLevel ::= RewriteRule | Pattern | FunctionDef
 
-    FunctionDef ::= DEFINE IDENT '('$ FormalArgList ')'$ ScopeBlock
+    FunctionDef ::= DEFINE$ IDENT '('$ FormalArgList ')'$ '{'$ Pattern$Body '}'$
 
     FormalArgList$$FormalArg ::= FormalArg | FormalArgList ','$ FormalArg
 
@@ -73,34 +87,152 @@ $Rules
 
     Pattern$Pattern ::= Node
                     |   Node ScopeBlock
+	/.
+	    public Pattern betaSubst(Map bindings) {
+	        if (bindings.isEmpty())
+	            return this;
+	        INode node= ((Node) _Node).betaSubst(bindings);
+	        ScopeBlock scope= (_ScopeBlock == null) ? null : _ScopeBlock.betaSubst(bindings);
+
+	        return new Pattern(environment, leftIToken, rightIToken, node, scope);
+	    }
+	 ./
 
     ScopeBlock ::= '{'$ PatternList '}'$
+        /.
+            public ScopeBlock betaSubst(Map bindings) {
+                PatternList mappedPatterns= _PatternList.betaSubst(bindings);
+                return new ScopeBlock(environment, leftIToken, rightIToken, mappedPatterns);
+            }
+         ./
 
     PatternList$$Pattern ::= Pattern | PatternList Pattern
+        /.
+            public PatternList betaSubst(Map bindings) {
+                PatternList mappedPatterns= new PatternList(environment, leftIToken, rightIToken, true);
+                for(int i=0; i < size(); i++) {
+                    IPattern pattern= getPatternAt(i);
+                    // Following instanceof's wouldn't be necessary if JikesPG could promote common production methods to the non-terminal interface.
+                    IPattern mappedPattern= null;
+                    if (pattern instanceof Pattern)
+                        mappedPattern= ((Pattern) pattern).betaSubst(bindings);
+                    else if (pattern instanceof Node)
+                        mappedPattern= ((Node) pattern).betaSubst(bindings);
+                    else if (pattern instanceof FunctionCall)
+                        mappedPattern= ((FunctionCall) pattern).betaSubst(bindings);
+                    mappedPatterns.add(mappedPattern);
+                }
+                return mappedPatterns;
+            }
+         ./
 
     Node ::= '['$ NodeType$type optNodeName$name optSharp optTargetType$targetType optConstraintList$constraints ChildList ']'$
+         /.
+             public Node betaSubst(Map bindings) {
+                 optNodeName name= _name;
+                 if (name != null) {
+                     IToken mappedName= bindings.containsKey(_name) ? (IToken) bindings.get(_name) : _name.getIDENT();
+
+                     name= new optNodeName(mappedName);
+                 }
+                 return new Node(environment, leftIToken, rightIToken, _type, name,
+		                _optSharp, _targetType,
+		                _constraints.betaSubst(bindings),
+		                _ChildList.betaSubst(bindings));
+             }
+          ./
          |   FunctionCall
 
-    FunctionCall ::= 
+    FunctionCall ::= IDENT '('$ ActualArgList ')'$
+        /.
+             public FunctionCall betaSubst(Map bindings) {
+                 return new FunctionCall(environment, leftIToken, rightIToken, _IDENT,
+		                _ActualArgList.betaSubst(bindings));
+             }
+         ./
+
+    ActualArgList$$ActualArg ::= ActualArg | ActualArgList ','$ ActualArg
+        /.
+            public ActualArgList betaSubst(Map bindings) {
+                 ActualArgList mappedArgList= new ActualArgList(environment, leftIToken, rightIToken, true);
+
+                 for(int i=0; i < size(); i++) {
+                     ActualArg arg= getActualArgAt(i);
+
+                     mappedArgList.add(arg.betaSubst(bindings));
+                 }
+                 return mappedArgList;
+             }
+         ./
+
+    ActualArg ::= IDENT
+        /.
+            public ActualArg betaSubst(Map bindings) {
+                return this;
+            }
+         ./
 
     optSharp ::= $empty | '#'
 
     NodeType      ::= IDENT
     optNodeName   ::= IDENT | $empty
-    optTargetType ::= COLON IDENT | $empty
+    optTargetType ::= COLON$ IDENT | $empty
 
     optConstraintList ::= $empty
                         | '{'$ ConstraintList '}'$
+        /.
+            public optConstraintList betaSubst(Map bindings) {
+                return new optConstraintList(environment, leftIToken, rightIToken,
+                                             _ConstraintList.betaSubst(bindings));
+            }
+         ./
 
     ConstraintList$$Constraint ::= Constraint
                                  | ConstraintList ','$ Constraint
+        /.
+            public ConstraintList betaSubst(Map bindings) {
+                ConstraintList mappedConstraints= new ConstraintList(environment, leftIToken, rightIToken, true);
+
+                for(int i=0; i < size(); i++) {
+                    IConstraint cons= getConstraintAt(i);
+                    IConstraint mappedCons= null;
+                    if (cons instanceof OperatorConstraint)
+                        mappedCons= ((OperatorConstraint) cons).betaSubst(bindings);
+                    else if (cons instanceof BoundConstraint)
+                        mappedCons= ((BoundConstraint) cons).betaSubst(bindings);
+                    mappedConstraints.add(mappedCons);
+                }
+                return mappedConstraints;
+            }
+         ./
 
     Constraint ::= OperatorConstraint
                  | BoundConstraint
 
     OperatorConstraint ::= NodeAttribute$lhs Operator Value$rhs
+        /.
+            public OperatorConstraint betaSubst(Map bindings) {
+                IValue newRHS= null;
+                if (_rhs instanceof NodeAttribute)
+                    newRHS= ((NodeAttribute) _rhs).betaSubst(bindings);
+                else if (_rhs instanceof ILiteral)
+                    newRHS= _rhs;
+                else if (_rhs instanceof Node)
+                    newRHS= ((Node) _rhs).betaSubst(bindings);
+                return new OperatorConstraint(environment, leftIToken, rightIToken,
+                                              _lhs.betaSubst(bindings),
+                                              _Operator,
+                                              newRHS);
+            }
+         ./
 
     BoundConstraint ::= '<'$ Bound$lowerBound ':'$ Bound$upperBound '>'$
+        /.
+            public BoundConstraint betaSubst(Map bindings) {
+                return this;
+            }
+         ./
+
     Bound           ::= NumericBound | Unbounded
     NumericBound    ::= NUMBER
     Unbounded       ::= '*'
@@ -114,8 +246,25 @@ $Rules
                for(int i=0; i < _optAttrList.size(); i++)
                    targetNode= environment.getASTAdapter().getValue(_optAttrList.getElementAt(i).toString(), targetNode);
                return environment.getASTAdapter().getValue(_IDENT.toString(), targetNode);
-           } ./
+           }
+           public NodeAttribute betaSubst(Map bindings) {
+               return new NodeAttribute(environment, leftIToken, rightIToken,
+                                        _optAttrList.betaSubst(bindings),
+                                        _IDENT);
+           }
+         ./
     optAttrList$$ident ::= $empty | optAttrList ident '.'$
+        /.
+            public identList betaSubst(Map bindings) {
+                // Is it right to map each component individually? Probably not...
+                identList mappedIdents= new identList(environment, leftIToken, rightIToken, true);
+                for(int i=0; i < size(); i++) {
+                    ident id= getidentAt(i);
+                    mappedIdents.add(bindings.containsKey(id) ? (ident) bindings.get(id) : id);
+                }
+                return mappedIdents;
+            }
+         ./
 
     ident ::= IDENT
 
@@ -177,8 +326,27 @@ $Rules
 
     ChildList$$Child ::= $empty
                        | ChildList Child
+        /.
+            public ChildList betaSubst(Map bindings) {
+                ChildList newList= new ChildList(environment, leftIToken, rightIToken, true);
+                for(int i=0; i < size(); i++) {
+                    newList.add(getChildAt(i).betaSubst(bindings));
+                }
+                return newList;
+            }
+        ./
 
     Child ::= LinkType Node
+        /.
+            public Child betaSubst(Map bindings) {
+                INode mappedNode= null;
+                if (_Node instanceof Node)
+                    mappedNode= ((Node) _Node).betaSubst(bindings);
+                else if (_Node instanceof FunctionCall)
+                    mappedNode= ((FunctionCall) _Node).betaSubst(bindings);
+                return new Child(environment, leftIToken, rightIToken, _LinkType, mappedNode);
+            }
+        ./
 
     LinkType    ::= DirectLink | ClosureLink
     DirectLink  ::= '|-'$ | '\-'$ | $empty
