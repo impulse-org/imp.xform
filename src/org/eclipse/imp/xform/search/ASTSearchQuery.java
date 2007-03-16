@@ -95,11 +95,11 @@ public class ASTSearchQuery implements ISearchQuery {
                             if (exten != null && fLanguage.hasExtension(exten)) {
                         	monitor.subTask("Searching " + file.getFullPath());
                                 String contents= StreamUtils.readStreamContents(file.getContents(), ResourcesPlugin.getEncoding());
-                                IParseController parseController= (IParseController) ExtensionPointFactory.createExtensionPoint(fLanguage, RuntimePlugin.UIDE_RUNTIME, "parser");
+                                IParseController parseController= (IParseController) ExtensionPointFactory.createExtensionPoint(fLanguage, "parser");
 
                                 if (parseController == null)
                                     return false;
-                                parseController.initialize(resource.getProjectRelativePath().toString(), p, msgHandler);
+                                parseController.initialize(resource.getProjectRelativePath(), p, msgHandler);
 
                                 Object astRoot= parseController.parse(contents, false, monitor);
 
