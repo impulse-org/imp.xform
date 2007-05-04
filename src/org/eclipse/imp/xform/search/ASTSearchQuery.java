@@ -18,8 +18,12 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.text.Match;
+import org.eclipse.uide.core.ErrorHandler;
 import org.eclipse.uide.core.Language;
 import org.eclipse.uide.core.LanguageRegistry;
+import org.eclipse.uide.model.ISourceProject;
+import org.eclipse.uide.model.ModelFactory;
+import org.eclipse.uide.model.ModelFactory.ModelException;
 import org.eclipse.uide.parser.IParseController;
 import org.eclipse.uide.runtime.RuntimePlugin;
 import org.eclipse.uide.utils.ExtensionPointFactory;
@@ -96,10 +100,17 @@ public class ASTSearchQuery implements ISearchQuery {
                         	monitor.subTask("Searching " + file.getFullPath());
                                 String contents= StreamUtils.readStreamContents(file.getContents(), ResourcesPlugin.getEncoding());
                                 IParseController parseController= (IParseController) ExtensionPointFactory.createExtensionPoint(fLanguage, "parser");
+                                ISourceProject srcProject;
+				try {
+				    srcProject= ModelFactory.open(p);
+				} catch (ModelException e) {
+				    ErrorHandler.reportError(e.getMessage());
+				    throw new CoreException(new Status(IStatus.ERROR, XformPlugin.kPluginID, 0, e.getMessage(), e));
+				}
 
                                 if (parseController == null)
                                     return false;
-                                parseController.initialize(resource.getProjectRelativePath(), p, msgHandler);
+                                parseController.initialize(resource.getProjectRelativePath(), srcProject, msgHandler);
 
                                 Object astRoot= parseController.parse(contents, false, monitor);
 
