@@ -1,4 +1,4 @@
-package com.ibm.watson.safari.xform.search;
+package org.eclipse.imp.xform.search;
 
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-%options package=com.ibm.watson.safari.xform.pattern.parser
+%options package=org.eclipse.imp.xform.pattern.parser
 %options template=uide/dtParserTemplate.gi
 %options import_terminals=ASTPatternLexer.gi
 %options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=PatternNode
@@ -12,9 +12,9 @@ $Globals
     import java.util.Set;
     import java.util.Map;
     import java.util.HashMap;
-    import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
-    import com.ibm.watson.safari.xform.pattern.matching.Matcher;
-    import com.ibm.watson.safari.xform.pattern.matching.MatchResult;./
+    import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+    import org.eclipse.imp.xform.pattern.matching.Matcher;
+    import org.eclipse.imp.xform.pattern.matching.MatchResult;./
 $End
 
 $Headers

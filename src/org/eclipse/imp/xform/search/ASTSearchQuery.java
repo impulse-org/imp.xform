@@ -1,4 +1,4 @@
-package com.ibm.watson.safari.xform.search;
+package org.eclipse.imp.xform.search;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -15,26 +15,25 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.imp.core.ErrorHandler;
+import org.eclipse.imp.core.Language;
+import org.eclipse.imp.core.LanguageRegistry;
+import org.eclipse.imp.model.ISourceProject;
+import org.eclipse.imp.model.ModelFactory;
+import org.eclipse.imp.model.ModelFactory.ModelException;
+import org.eclipse.imp.parser.IParseController;
+import org.eclipse.imp.utils.ExtensionPointFactory;
+import org.eclipse.imp.utils.StreamUtils;
+import org.eclipse.imp.xform.XformPlugin;
+import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+import org.eclipse.imp.xform.pattern.matching.MatchResult;
+import org.eclipse.imp.xform.pattern.matching.Matcher;
+import org.eclipse.imp.xform.pattern.parser.ASTPatternLexer;
+import org.eclipse.imp.xform.pattern.parser.ASTPatternParser;
+import org.eclipse.imp.xform.pattern.parser.Ast.Pattern;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.text.Match;
-import org.eclipse.uide.core.ErrorHandler;
-import org.eclipse.uide.core.Language;
-import org.eclipse.uide.core.LanguageRegistry;
-import org.eclipse.uide.model.ISourceProject;
-import org.eclipse.uide.model.ModelFactory;
-import org.eclipse.uide.model.ModelFactory.ModelException;
-import org.eclipse.uide.parser.IParseController;
-import org.eclipse.uide.runtime.RuntimePlugin;
-import org.eclipse.uide.utils.ExtensionPointFactory;
-import org.eclipse.uide.utils.StreamUtils;
-import com.ibm.watson.safari.xform.XformPlugin;
-import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
-import com.ibm.watson.safari.xform.pattern.matching.MatchResult;
-import com.ibm.watson.safari.xform.pattern.matching.Matcher;
-import com.ibm.watson.safari.xform.pattern.parser.ASTPatternLexer;
-import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
-import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
 
 public class ASTSearchQuery implements ISearchQuery {
     private String fASTPatternString;

@@ -1,8 +1,8 @@
-package com.ibm.watson.safari.xform.pattern.matching;
+package org.eclipse.imp.xform.pattern.matching;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
-import com.ibm.watson.safari.xform.pattern.parser.Ast.NodeAttribute;
 
 /**
  * @author rfuhrer@watson.ibm.com

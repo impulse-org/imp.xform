@@ -1,12 +1,12 @@
 /*
  * Created on Jun 8, 2006
  */
-package com.ibm.watson.safari.xform.pattern.rewriting;
+package org.eclipse.imp.xform.pattern.rewriting;
 
-import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
-import com.ibm.watson.safari.xform.pattern.matching.MatchResult;
-import com.ibm.watson.safari.xform.pattern.matching.Matcher;
-import com.ibm.watson.safari.xform.pattern.parser.Ast.Pattern;
+import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+import org.eclipse.imp.xform.pattern.matching.MatchResult;
+import org.eclipse.imp.xform.pattern.matching.Matcher;
+import org.eclipse.imp.xform.pattern.parser.Ast.Pattern;
 
 public class Rewriter {
     private final IASTAdapter fAdapter;

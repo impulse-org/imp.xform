@@ -1,4 +1,4 @@
-package com.ibm.watson.safari.xform.search;
+package org.eclipse.imp.xform.search;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;

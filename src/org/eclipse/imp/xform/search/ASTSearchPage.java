@@ -1,9 +1,12 @@
-package com.ibm.watson.safari.xform.search;
+package org.eclipse.imp.xform.search;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.imp.core.Language;
+import org.eclipse.imp.core.LanguageRegistry;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.search.ui.ISearchPage;
@@ -16,8 +19,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.uide.core.Language;
-import org.eclipse.uide.core.LanguageRegistry;
 
 public class ASTSearchPage extends DialogPage implements ISearchPage {
     private ISearchPageContainer fContainer;

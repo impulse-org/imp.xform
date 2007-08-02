@@ -1,4 +1,4 @@
-%options package=com.ibm.watson.safari.xform.pattern.parser
+%options package=org.eclipse.imp.xform.pattern.parser
 %options template=uide/LexerTemplate.gi
 %options filter=ASTPatternKWLexer.gi
 
@@ -297,7 +297,7 @@ $Rules
 
     letter ::= aA | bB | cC | dD | eE | fF | gG | hH | iI | jJ | kK | lL | mM | nN | oO | pP | qQ | rR | sS | tT | uU | vV | wW | xX | yY | zZ
 
-    any ::= letter | digit | special | white
+    -- any ::= letter | digit | special | white
 
     whiteChar ::= Space | LF | CR | HT | FF
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ibm.watson.safari.xform.pattern.matching;
+package org.eclipse.imp.xform.pattern.matching;
 
 import java.util.HashMap;
 import java.util.Iterator;

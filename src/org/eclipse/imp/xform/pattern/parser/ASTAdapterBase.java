@@ -1,7 +1,7 @@
 /*
  * Created on Jun 6, 2006
  */
-package com.ibm.watson.safari.xform.pattern.parser;
+package org.eclipse.imp.xform.pattern.parser;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import com.ibm.watson.safari.xform.pattern.matching.IASTAdapter;
-import com.ibm.watson.safari.xform.pattern.matching.MatchResult;
-import com.ibm.watson.safari.xform.pattern.matching.Matcher;
+import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+import org.eclipse.imp.xform.pattern.matching.MatchResult;
+import org.eclipse.imp.xform.pattern.matching.Matcher;
 
 public abstract class ASTAdapterBase implements IASTAdapter {
     private static Object[] EMPTY= new Object[0];

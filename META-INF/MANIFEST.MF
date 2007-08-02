@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SAFARI Transformation Toolkit
-Bundle-SymbolicName: com.ibm.watson.safari.xform; singleton:=true
-Bundle-Version: 1.0.57
-Bundle-Activator: com.ibm.watson.safari.xform.XformPlugin
+Bundle-Name: IMP Transformation Toolkit
+Bundle-SymbolicName: org.eclipse.imp.xform; singleton:=true
+Bundle-Version: 1.0.58
+Bundle-Activator: org.eclipse.imp.xform.XformPlugin
 Bundle-Vendor: rfuhrer@watson.ibm.com
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.junit,
- org.eclipse.uide.runtime,
+ org.eclipse.imp.runtime,
  org.eclipse.search,
  org.eclipse.ui.workbench.texteditor,
  org.eclipse.jface.text,
@@ -18,8 +18,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  polyglot,
  lpg.runtime
-Eclipse-AutoStart: true
-Export-Package: com.ibm.watson.safari.xform,
- com.ibm.watson.safari.xform.pattern.matching,
- com.ibm.watson.safari.xform.pattern.parser,
- com.ibm.watson.safari.xform.pattern.parser.Ast
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.imp.xform,
+ org.eclipse.imp.xform.pattern.matching,
+ org.eclipse.imp.xform.pattern.parser,
+ org.eclipse.imp.xform.pattern.parser.Ast

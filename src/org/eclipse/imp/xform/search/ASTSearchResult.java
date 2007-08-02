@@ -1,6 +1,7 @@
-package com.ibm.watson.safari.xform.search;
+package org.eclipse.imp.xform.search;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.imp.xform.XformPlugin;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.text.AbstractTextSearchResult;
@@ -10,7 +11,6 @@ import org.eclipse.search.ui.text.Match;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import com.ibm.watson.safari.xform.XformPlugin;
 
 public class ASTSearchResult extends AbstractTextSearchResult implements IFileMatchAdapter, IEditorMatchAdapter {
     private ASTSearchQuery fQuery;

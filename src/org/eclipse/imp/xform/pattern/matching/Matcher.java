@@ -1,7 +1,7 @@
-package com.ibm.watson.safari.xform.pattern.matching;
+package org.eclipse.imp.xform.pattern.matching;
 
-import com.ibm.watson.safari.xform.pattern.parser.ASTPatternParser;
-import com.ibm.watson.safari.xform.pattern.parser.Ast.*;
+import org.eclipse.imp.xform.pattern.parser.ASTPatternParser;
+import org.eclipse.imp.xform.pattern.parser.Ast.*;
 
 /**
  * @author rfuhrer@watson.ibm.com

@@ -1,6 +1,7 @@
-package com.ibm.watson.safari.xform.search;
+package org.eclipse.imp.xform.search;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.imp.xform.XformPlugin;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -14,7 +15,6 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import com.ibm.watson.safari.xform.XformPlugin;
 
 public class ASTSearchResultPage extends AbstractTextSearchViewPage {
     private static final Image sSearchHitImage= XformPlugin.getImageDescriptor("icons/astSearchHit.gif").createImage();

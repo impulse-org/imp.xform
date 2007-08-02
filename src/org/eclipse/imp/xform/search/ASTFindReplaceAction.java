@@ -1,6 +1,9 @@
-package com.ibm.watson.safari.xform.search;
+package org.eclipse.imp.xform.search;
 
 import java.util.ResourceBundle;
+
+import org.eclipse.imp.editor.IASTFindReplaceTarget;
+import org.eclipse.imp.editor.UniversalEditor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.events.DisposeEvent;
@@ -13,8 +16,6 @@ import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.texteditor.ResourceAction;
-import org.eclipse.uide.editor.IASTFindReplaceTarget;
-import org.eclipse.uide.editor.UniversalEditor;
 
 /**
  * An action which opens an AST-based Find/Replace dialog.

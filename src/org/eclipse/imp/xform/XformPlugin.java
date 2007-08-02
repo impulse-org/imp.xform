@@ -1,4 +1,4 @@
-package com.ibm.watson.safari.xform;
+package org.eclipse.imp.xform;
 
 import org.eclipse.ui.plugin.*;
 import org.eclipse.jface.resource.ImageDescriptor;
