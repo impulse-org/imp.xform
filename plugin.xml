@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-   <extension-point id="astAdapter" name="SAFARI AST Adapter" schema="schema/astAdapter.exsd"/>
+   <extension-point id="astAdapter" name="IMP AST Adapter" schema="schema/astAdapter.exsd"/>
 
    <extension
          point="org.eclipse.ui.actionSets">
       <actionSet
-            id="com.ibm.watson.safari.xform.actionSet"
+            id="org.eclipse.imp.xform.actionSet"
             label="AST Transformations"
             visible="true">
          <action
-               class="com.ibm.watson.safari.xform.search.ASTFindReplaceAction"
-               definitionId="com.ibm.watson.safari.xform.findReplace"
-               id="com.ibm.watson.safari.xform.astFindReplaceAction"
+               class="org.eclipse.imp.xform.search.ASTFindReplaceAction"
+               definitionId="org.eclipse.imp.xform.findReplace"
+               id="org.eclipse.imp.xform.astFindReplaceAction"
                label="AST Find/Replace..."
                menubarPath="Edit/additions"
                style="push"
@@ -22,17 +22,17 @@
    <extension
          point="org.eclipse.ui.commands">
       <category
-            id="com.ibm.watson.safari.xform.category"
+            id="org.eclipse.imp.xform.category"
             name="AST Transformation"/>
       <command
-            category="com.ibm.watson.safari.xform.category"
-            id="com.ibm.watson.safari.xform.findReplace"
+            category="org.eclipse.imp.xform.category"
+            id="org.eclipse.imp.xform.findReplace"
             name="AST Find/Replace"/>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="com.ibm.watson.safari.xform.findReplace"
+            commandId="org.eclipse.imp.xform.findReplace"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="M3+M1+R"/>
@@ -42,19 +42,19 @@
          point="org.eclipse.search.searchPages">
       <page
             canSearchEnclosingProjects="true"
-            class="com.ibm.watson.safari.xform.search.ASTSearchPage"
+            class="org.eclipse.imp.xform.search.ASTSearchPage"
             enabled="true"
             extensions="g:100"
             icon="icons/astSearchPage.gif"
-            id="com.ibm.watson.safari.xform.searchPage"
+            id="org.eclipse.imp.xform.searchPage"
             label="AST Search"
             showScopeSection="true"/>
    </extension>
    <extension
          point="org.eclipse.search.searchResultViewPages">
       <viewPage
-            class="com.ibm.watson.safari.xform.search.ASTSearchResultPage"
-            id="com.ibm.watson.safari.xform.searchResultViewPage"
-            searchResultClass="com.ibm.watson.safari.xform.search.ASTSearchResult"/>
+            class="org.eclipse.imp.xform.search.ASTSearchResultPage"
+            id="org.eclipse.imp.xform.searchResultViewPage"
+            searchResultClass="org.eclipse.imp.xform.search.ASTSearchResult"/>
    </extension>  
 </plugin>
