@@ -5,7 +5,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.osgi.framework.BundleContext;
 
 public class XformPlugin extends AbstractUIPlugin {
-    public static final String kPluginID= "com.ibm.watson.safari.xform";
+    public static final String kPluginID= "org.eclipse.imp.xform";
 
     // The shared instance.
     private static XformPlugin plugin;
