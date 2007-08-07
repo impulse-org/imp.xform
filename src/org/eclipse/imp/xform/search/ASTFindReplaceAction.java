@@ -186,7 +186,7 @@ public class ASTFindReplaceAction implements IWorkbenchWindowActionDelegate /* e
     // From here on down is code taken from FindReplaceAction that supports using the
     // action as a "contributed" action by the UniversalEditor, but that requires the
     // UniversalEditor to know about this stuff, which would introduce a cyclic dependency,
-    // until such time as we're ready to move this code into org.eclipse.uide...
+    // until such time as we're ready to move this code into org.eclipse.imp...
     // ====================================================================================
 
     /**
