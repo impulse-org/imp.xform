@@ -1,7 +1,7 @@
 --
 -- The AST Pattern KeyWord Lexer
 --
-%options package=com.ibm.watson.safari.xform.pattern.parser
+%options package=org.eclipse.imp.xform.pattern.parser
 %options template=uide/KeywordTemplate.gi
 
 $Include
