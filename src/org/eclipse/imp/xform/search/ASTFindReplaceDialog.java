@@ -3,9 +3,9 @@ package org.eclipse.imp.xform.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.imp.core.LanguageRegistry;
-import org.eclipse.imp.editor.IASTFindReplaceTarget;
+import org.eclipse.imp.language.LanguageRegistry;
 import org.eclipse.imp.parser.IParseController;
+import org.eclipse.imp.services.IASTFindReplaceTarget;
 import org.eclipse.imp.utils.ExtensionPointFactory;
 import org.eclipse.imp.xform.XformPlugin;
 import org.eclipse.imp.xform.pattern.matching.IASTAdapter;

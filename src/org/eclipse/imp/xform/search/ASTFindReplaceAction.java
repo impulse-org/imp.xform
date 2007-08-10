@@ -2,8 +2,8 @@ package org.eclipse.imp.xform.search;
 
 import java.util.ResourceBundle;
 
-import org.eclipse.imp.editor.IASTFindReplaceTarget;
 import org.eclipse.imp.editor.UniversalEditor;
+import org.eclipse.imp.services.IASTFindReplaceTarget;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.swt.events.DisposeEvent;

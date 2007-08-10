@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.imp.core.Language;
-import org.eclipse.imp.core.LanguageRegistry;
+import org.eclipse.imp.language.Language;
+import org.eclipse.imp.language.LanguageRegistry;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.search.ui.ISearchPage;
