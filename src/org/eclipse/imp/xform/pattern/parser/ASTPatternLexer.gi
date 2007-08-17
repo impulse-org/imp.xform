@@ -1,30 +1,30 @@
 %options package=org.eclipse.imp.xform.pattern.parser
-%options template=uide/LexerTemplate.gi
+%options template=LexerTemplate.gi
 %options filter=ASTPatternKWLexer.gi
 
-$Globals
+%Globals
     /.import java.util.*;
     ./
-$End
+%End
 
-$Define
+%Define
 --    $additional_interfaces /., ILexer./
     $kw_lexer_class /.$ASTPatternKWLexer./
-$End
+%End
 
-$Include
-    uide/LexerBasicMap.gi
-$End
+%Include
+    LexerBasicMap.gi
+%End
 
-$Identifier
+%Identifier
     IDENT
-$End
+%End
 
-$Define
+%Define
     $_IDENTIFIER /.$_IDENT./
-$End
+%End
 
-$Export
+%Export
     SINGLE_LINE_COMMENT
     IDENT
     NUMBER
@@ -47,9 +47,9 @@ $Export
     NOTEQUALS
     DIRECT
     DIRECTEND
-$End
+%End
 
-$Terminals
+%Terminals
     CtlCharNotWS
 
     LF   CR   HT   FF
@@ -105,13 +105,13 @@ $Terminals
 --    Equals       ::= '=='
 --    Direct       ::= '|-'
 --    DirectEnd    ::= '\-'
-$End
+%End
 
-$Start
+%Start
     Token
-$End
+%End
 
-$Rules
+%Rules
     Token ::= identifier
         /.$BeginJava
                     checkForKeyWord();
@@ -314,4 +314,4 @@ $Rules
                        '/' | '$'
 
     notQuote ::= letter | digit | specialNoQuote | Space | HT
-$End
+%End

@@ -2,30 +2,30 @@
 -- The AST Pattern KeyWord Lexer
 --
 %options package=org.eclipse.imp.xform.pattern.parser
-%options template=uide/KeywordTemplate.gi
+%options template=KeywordTemplate.gi
 
-$Include
-    uide/KWLexerLowerCaseMap.gi
-$End
+%Include
+    KWLexerLowerCaseMap.gi
+%End
 
-$Export
+%Export
     -- List all the keywords the kwlexer will export to the lexer and parser
     typeOf
     targetTypeOf
     DEFINE
-$End
+%End
 
-$Terminals
+%Terminals
     a    b    c    d    e    f    g    h    i    j    k    l    m
     n    o    p    q    r    s    t    u    v    w    x    y    z
     O    T
-$End
+%End
 
-$Start
+%Start
     Keyword
-$End
+%End
 
-$Rules
+%Rules
     -- The Goal for the parser is a single Keyword
 
     Keyword ::= d e f i n e
@@ -43,4 +43,4 @@ $Rules
             $setResult($_targetTypeOf);
           $EndAction
         ./
-$End
+%End

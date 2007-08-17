@@ -1,13 +1,13 @@
 %options package=org.eclipse.imp.xform.pattern.parser
-%options template=uide/dtParserTemplate.gi
+%options template=dtParserTemplate.gi
 %options import_terminals=ASTPatternLexer.gi
 %options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=PatternNode
 
-$Define
+%Define
     $ast_class /.PatternNode./
-$End
+%End
 
-$Globals
+%Globals
     /.import java.util.Collections;
     import java.util.Set;
     import java.util.Map;
@@ -15,9 +15,9 @@ $Globals
     import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
     import org.eclipse.imp.xform.pattern.matching.Matcher;
     import org.eclipse.imp.xform.pattern.matching.MatchResult;./
-$End
+%End
 
-$Headers
+%Headers
     /.  private static IASTAdapter fASTAdapter= new ASTAdapterBase() { };
         public static void setASTAdapter(IASTAdapter a) { fASTAdapter= a; }
         public static IASTAdapter getASTAdapter() { return fASTAdapter; }
@@ -34,13 +34,13 @@ $Headers
 
         public static SymbolTable getSymbolTable() { return fSymbolTable; }
      ./
-$End
+%End
 
-$Identifier
+%Identifier
      IDENT
-$End
+%End
 
-$Terminals
+%Terminals
      IDENT
      NUMBER
      STRING
@@ -68,13 +68,13 @@ $Terminals
      GREATERTHAN  ::= '>'
      SHARP        ::= '#'
      UNDERSCORE   ::= '_'
-$End
+%End
 
-$Start
+%Start
     TopLevel
-$End
+%End
 
-$Rules
+%Rules
     TopLevel ::= RewriteRule | Pattern | FunctionDef
 
     FunctionDef ::= DEFINE$ IDENT '('$ FormalArgList ')'$ '{'$ Pattern$Body '}'$
@@ -172,13 +172,13 @@ $Rules
             }
          ./
 
-    optSharp ::= $empty | '#'
+    optSharp ::= %empty | '#'
 
     NodeType      ::= IDENT
-    optNodeName   ::= IDENT | $empty
-    optTargetType ::= COLON$ IDENT | $empty
+    optNodeName   ::= IDENT | %empty
+    optTargetType ::= COLON$ IDENT | %empty
 
-    optConstraintList ::= $empty
+    optConstraintList ::= %empty
                         | '{'$ ConstraintList '}'$
         /.
             public optConstraintList betaSubst(Map bindings) {
@@ -253,7 +253,7 @@ $Rules
                                         _IDENT);
            }
          ./
-    optAttrList$$ident ::= $empty | optAttrList ident '.'$
+    optAttrList$$ident ::= %empty | optAttrList ident '.'$
         /.
             public identList betaSubst(Map bindings) {
                 // Is it right to map each component individually? Probably not...
@@ -324,7 +324,7 @@ $Rules
            }
         ./
 
-    ChildList$$Child ::= $empty
+    ChildList$$Child ::= %empty
                        | ChildList Child
         /.
             public ChildList betaSubst(Map bindings) {
@@ -349,6 +349,6 @@ $Rules
         ./
 
     LinkType    ::= DirectLink | ClosureLink
-    DirectLink  ::= '|-'$ | '\-'$ | $empty
+    DirectLink  ::= '|-'$ | '\-'$ | %empty
     ClosureLink ::= DirectLink '...' '-'
-$End
+%End
