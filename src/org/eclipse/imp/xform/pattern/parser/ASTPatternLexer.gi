@@ -2,6 +2,14 @@
 %options template=LexerTemplate.gi
 %options filter=ASTPatternKWLexer.gi
 
+%Notice
+/.
+// (C) Copyright IBM Corporation 2007
+// 
+// This file is part of the Eclipse IMP.
+./
+%End
+
 %Globals
     /.import java.util.*;
     ./

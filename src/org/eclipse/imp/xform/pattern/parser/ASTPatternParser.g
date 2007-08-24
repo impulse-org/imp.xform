@@ -74,6 +74,14 @@
     TopLevel
 %End
 
+%Notice
+/.
+// (C) Copyright IBM Corporation 2007
+// 
+// This file is part of the Eclipse IMP.
+./
+%End
+
 %Rules
     TopLevel ::= RewriteRule | Pattern | FunctionDef
 

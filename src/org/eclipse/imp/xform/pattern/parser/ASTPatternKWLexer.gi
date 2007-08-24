@@ -4,6 +4,14 @@
 %options package=org.eclipse.imp.xform.pattern.parser
 %options template=KeywordTemplate.gi
 
+%Notice
+/.
+// (C) Copyright IBM Corporation 2007
+// 
+// This file is part of the Eclipse IMP.
+./
+%End
+
 %Include
     KWLexerLowerCaseMap.gi
 %End
