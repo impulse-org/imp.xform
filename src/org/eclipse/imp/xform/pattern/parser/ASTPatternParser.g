@@ -109,7 +109,7 @@
     ScopeBlock ::= '{'$ PatternList '}'$
         /.
             public ScopeBlock betaSubst(Map bindings) {
-                PatternList mappedPatterns= _PatternList.betaSubst(bindings);
+                PatternList_PatternList mappedPatterns= (PatternList_PatternList) _PatternList.betaSubst(bindings);
                 return new ScopeBlock(environment, leftIToken, rightIToken, mappedPatterns);
             }
          ./
@@ -117,7 +117,7 @@
     PatternList$$Pattern ::= Pattern | PatternList Pattern
         /.
             public PatternList betaSubst(Map bindings) {
-                PatternList mappedPatterns= new PatternList(environment, leftIToken, rightIToken, true);
+                PatternList mappedPatterns= new PatternList_PatternList(environment, leftIToken, rightIToken, true);
                 for(int i=0; i < size(); i++) {
                     IPattern pattern= getPatternAt(i);
                     // Following instanceof's wouldn't be necessary if JikesPG could promote common production methods to the non-terminal interface.
@@ -146,7 +146,7 @@
                  return new Node(environment, leftIToken, rightIToken, _type, name,
 		                _optSharp, _targetType,
 		                _constraints.betaSubst(bindings),
-		                _ChildList.betaSubst(bindings));
+		                (ChildList_ChildList) _ChildList.betaSubst(bindings));
              }
           ./
          |   FunctionCall
@@ -155,14 +155,14 @@
         /.
              public FunctionCall betaSubst(Map bindings) {
                  return new FunctionCall(environment, leftIToken, rightIToken, _IDENT,
-		                _ActualArgList.betaSubst(bindings));
+		                (ActualArgList_ActualArgList) _ActualArgList.betaSubst(bindings));
              }
          ./
 
     ActualArgList$$ActualArg ::= ActualArg | ActualArgList ','$ ActualArg
         /.
             public ActualArgList betaSubst(Map bindings) {
-                 ActualArgList mappedArgList= new ActualArgList(environment, leftIToken, rightIToken, true);
+                 ActualArgList mappedArgList= new ActualArgList_ActualArgList(environment, leftIToken, rightIToken, true);
 
                  for(int i=0; i < size(); i++) {
                      ActualArg arg= getActualArgAt(i);
@@ -191,7 +191,7 @@
         /.
             public optConstraintList betaSubst(Map bindings) {
                 return new optConstraintList(environment, leftIToken, rightIToken,
-                                             _ConstraintList.betaSubst(bindings));
+                                             (ConstraintList_ConstraintList) _ConstraintList.betaSubst(bindings));
             }
          ./
 
@@ -199,7 +199,7 @@
                                  | ConstraintList ','$ Constraint
         /.
             public ConstraintList betaSubst(Map bindings) {
-                ConstraintList mappedConstraints= new ConstraintList(environment, leftIToken, rightIToken, true);
+                ConstraintList mappedConstraints= new ConstraintList_ConstraintList(environment, leftIToken, rightIToken, true);
 
                 for(int i=0; i < size(); i++) {
                     IConstraint cons= getConstraintAt(i);
@@ -257,7 +257,7 @@
            }
            public NodeAttribute betaSubst(Map bindings) {
                return new NodeAttribute(environment, leftIToken, rightIToken,
-                                        _optAttrList.betaSubst(bindings),
+                                        (optAttrList_identList) _optAttrList.betaSubst(bindings),
                                         _IDENT);
            }
          ./
@@ -265,7 +265,7 @@
         /.
             public identList betaSubst(Map bindings) {
                 // Is it right to map each component individually? Probably not...
-                identList mappedIdents= new identList(environment, leftIToken, rightIToken, true);
+                identList mappedIdents= new optAttrList_identList(environment, leftIToken, rightIToken, true);
                 for(int i=0; i < size(); i++) {
                     ident id= getidentAt(i);
                     mappedIdents.add(bindings.containsKey(id) ? (ident) bindings.get(id) : id);
@@ -336,7 +336,7 @@
                        | ChildList Child
         /.
             public ChildList betaSubst(Map bindings) {
-                ChildList newList= new ChildList(environment, leftIToken, rightIToken, true);
+                ChildList newList= new ChildList_ChildList(environment, leftIToken, rightIToken, true);
                 for(int i=0; i < size(); i++) {
                     newList.add(getChildAt(i).betaSubst(bindings));
                 }
