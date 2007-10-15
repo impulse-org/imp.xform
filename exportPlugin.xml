@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="com.ibm.watson.safari.xform" default="build.update.jar" basedir=".">
+<project name="org.eclipse.imp.xform" default="build.update.jar" basedir=".">
 	<import file="../org.eclipse.imp.runtime.feature/buildCommon.xml"/>
 	<import file="../org.eclipse.imp.update/buildPluginCommon.xml"/>
 

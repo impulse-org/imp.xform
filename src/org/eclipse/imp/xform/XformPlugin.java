@@ -49,6 +49,6 @@ public class XformPlugin extends AbstractUIPlugin {
      * @return the image descriptor
      */
     public static ImageDescriptor getImageDescriptor(String path) {
-	return AbstractUIPlugin.imageDescriptorFromPlugin("com.ibm.watson.safari.xform", path);
+	return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.imp.xform", path);
     }
 }

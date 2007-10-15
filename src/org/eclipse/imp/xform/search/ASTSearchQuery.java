@@ -141,7 +141,7 @@ public class ASTSearchQuery implements ISearchQuery {
                 e.printStackTrace();
             }
         }
-        return new Status(IStatus.OK, "com.ibm.watson.safari.xform", 0, "Search complete", null);
+        return new Status(IStatus.OK, "org.eclipse.imp.xform", 0, "Search complete", null);
     }
 
     public String getLabel() {
