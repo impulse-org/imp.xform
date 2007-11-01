@@ -18,7 +18,7 @@ import java.util.Stack;
 import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
 import org.eclipse.imp.xform.pattern.matching.MatchResult;
 import org.eclipse.imp.xform.pattern.matching.Matcher;
-
+ 
 public abstract class ASTAdapterBase implements IASTAdapter {
     private static Object[] EMPTY= new Object[0];
 
@@ -202,5 +202,13 @@ public abstract class ASTAdapterBase implements IASTAdapter {
         if (roleName.equals(KIND) || roleName.equals(TARGET_TYPE))
             throw new IllegalArgumentException(roleName);
         return -1;
+    }
+    
+    public boolean isPlaceholder(Object astNode) {
+    	return astNode instanceof IASTPlaceholder;
+    }
+    
+    public String getPlaceholderName(Object astNode) {
+    	return ((IASTPlaceholder) astNode).getName();
     }
 }

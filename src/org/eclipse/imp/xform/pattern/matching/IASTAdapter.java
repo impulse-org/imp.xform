@@ -169,4 +169,21 @@ public interface IASTAdapter {
      * corresponding to the given AST node <code>astNode</code>.
      */
     public int getLength(Object astNode);
+    
+    /**
+     * Returns a boolean value indicating whether or not this AST node is
+     * a placeholder for a real AST node. This is used for matching AST patterns
+     * against real AST's.
+     */
+    public boolean isPlaceholder(Object astNode);
+    
+    /**
+     * If the AST node is a placeholder, return its name.
+     */
+    public String getPlaceholderName(Object astNode);
+    
+    public interface IASTPlaceholder {
+    	public String getName();
+    	public String getType();
+    }
 }
