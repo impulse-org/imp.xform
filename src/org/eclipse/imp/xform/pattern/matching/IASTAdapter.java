@@ -172,15 +172,15 @@ public interface IASTAdapter {
     
     /**
      * Returns a boolean value indicating whether or not this AST node is
-     * a placeholder for a real AST node. This is used for matching AST patterns
+     * a meta variable (placeholder) for a real AST node. This is used for matching AST patterns
      * against real AST's.
      */
-    public boolean isPlaceholder(Object astNode);
+    public boolean isMetaVariable(Object astNode);
     
     /**
-     * If the AST node is a placeholder, return its name.
+     * If the AST node is a meta variable, return its name.
      */
-    public String getPlaceholderName(Object astNode);
+    public String getMetaVariableName(Object astNode);
     
     public interface IASTPlaceholder {
     	public String getName();

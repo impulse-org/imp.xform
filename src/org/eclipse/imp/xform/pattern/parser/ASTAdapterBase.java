@@ -204,11 +204,11 @@ public abstract class ASTAdapterBase implements IASTAdapter {
         return -1;
     }
     
-    public boolean isPlaceholder(Object astNode) {
+    public boolean isMetaVariable(Object astNode) {
     	return astNode instanceof IASTPlaceholder;
     }
     
-    public String getPlaceholderName(Object astNode) {
+    public String getMetaVariableName(Object astNode) {
     	return ((IASTPlaceholder) astNode).getName();
     }
 }
