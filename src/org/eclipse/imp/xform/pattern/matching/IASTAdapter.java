@@ -186,4 +186,6 @@ public interface IASTAdapter {
     	public String getName();
     	public String getType();
     }
+    
+    public boolean isList(Object astNode);
 }

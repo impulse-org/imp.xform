@@ -211,4 +211,8 @@ public abstract class ASTAdapterBase implements IASTAdapter {
     public String getMetaVariableName(Object astNode) {
     	return ((IASTPlaceholder) astNode).getName();
     }
+    
+    public boolean isList(Object astNode) {
+    	return false;
+    }
 }
