@@ -182,10 +182,10 @@ public interface IASTAdapter {
      */
     public String getMetaVariableName(Object astNode);
     
-    public interface IASTPlaceholder {
-    	public String getName();
-    	public String getType();
-    }
-    
+   /**
+    * Returns a boolean value indicating whether or not this AST is to be
+    * considered a list. A list node that a varyadic number of children, as
+    * opposed to a normal AST node which has a fixed number of children.
+    */
     public boolean isList(Object astNode);
 }
