@@ -98,6 +98,14 @@ public abstract class ASTAdapterBase implements IASTAdapter {
 
     public Object[] getChildren(Object astNode) { return EMPTY; }
 
+    public Object[] getFollowingAdjuncts(Object astNode) {
+    	return EMPTY;
+    }
+    
+    public Object[] getPrecedingAdjuncts(Object astNode) {
+    	return EMPTY;
+    }
+    
     public boolean isInstanceOfType(Object astNode, String typeName) {return false; }
 
     public Set findAllMatches(Matcher matcher, Object astRoot) {
@@ -205,11 +213,11 @@ public abstract class ASTAdapterBase implements IASTAdapter {
     }
     
     public boolean isMetaVariable(Object astNode) {
-    	return astNode instanceof IASTPlaceholder;
+    	return false;
     }
     
     public String getMetaVariableName(Object astNode) {
-    	return ((IASTPlaceholder) astNode).getName();
+    	return null;
     }
     
     public boolean isList(Object astNode) {
