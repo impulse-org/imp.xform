@@ -5,6 +5,7 @@
  */
 package org.eclipse.imp.xform.search;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class ASTSearchPage extends DialogPage implements ISearchPage {
         langLabel.setLayoutData(new GridData(GridData.FILL, GridData.FILL, false, false, 1, 1));
 
         fLangCombo= new Combo(result, SWT.DROP_DOWN | SWT.READ_ONLY);
-	List/*<Language>*/ langs= LanguageRegistry.getLanguages();
+	    Collection<Language> langs= LanguageRegistry.getLanguages();
 
         for(Iterator iter= langs.iterator(); iter.hasNext();) {
 	    Language lang= (Language) iter.next();
