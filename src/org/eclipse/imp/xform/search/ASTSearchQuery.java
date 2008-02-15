@@ -21,12 +21,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.imp.core.ErrorHandler;
 import org.eclipse.imp.language.Language;
 import org.eclipse.imp.language.LanguageRegistry;
+import org.eclipse.imp.language.ServiceFactory;
 import org.eclipse.imp.model.ISourceProject;
 import org.eclipse.imp.model.ModelFactory;
 import org.eclipse.imp.model.ModelFactory.ModelException;
 import org.eclipse.imp.parser.IMessageHandler;
 import org.eclipse.imp.parser.IParseController;
-import org.eclipse.imp.utils.ExtensionPointFactory;
+import org.eclipse.imp.utils.ExtensionFactory;
 import org.eclipse.imp.utils.StreamUtils;
 import org.eclipse.imp.xform.XformPlugin;
 import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
@@ -61,7 +62,7 @@ public class ASTSearchQuery implements ISearchQuery {
 	fScope= scope;
         fResult= new ASTSearchResult(this);
 
-	fASTAdapter= (IASTAdapter) ExtensionPointFactory.createExtensionPoint(fLanguage, XformPlugin.kPluginID, "astAdapter");
+	fASTAdapter= (IASTAdapter) ExtensionFactory.createServiceExtensionForPlugin(fLanguage, XformPlugin.kPluginID, "astAdapter");
 	ASTPatternParser.setASTAdapter(fASTAdapter);
 
 	ASTPatternLexer lexer= new ASTPatternLexer(fASTPatternString.toCharArray(), "__PATTERN__");
@@ -100,7 +101,7 @@ public class ASTSearchQuery implements ISearchQuery {
                             if (exten != null && fLanguage.hasExtension(exten)) {
                         	monitor.subTask("Searching " + file.getFullPath());
                                 String contents= StreamUtils.readStreamContents(file.getContents(), ResourcesPlugin.getEncoding());
-                                IParseController parseController= (IParseController) ExtensionPointFactory.createExtensionPoint(fLanguage, "parser");
+                                IParseController parseController= ServiceFactory.getInstance().getParseController(fLanguage);
                                 ISourceProject srcProject;
 				try {
 				    srcProject= ModelFactory.open(p);

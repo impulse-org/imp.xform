@@ -11,7 +11,7 @@ import java.util.List;
 import org.eclipse.imp.language.LanguageRegistry;
 import org.eclipse.imp.parser.IParseController;
 import org.eclipse.imp.services.IASTFindReplaceTarget;
-import org.eclipse.imp.utils.ExtensionPointFactory;
+import org.eclipse.imp.utils.ExtensionFactory;
 import org.eclipse.imp.xform.XformPlugin;
 import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
 import org.eclipse.imp.xform.pattern.matching.MatchResult;
@@ -1086,7 +1086,7 @@ public class ASTFindReplaceDialog extends Dialog {
 	if (fTarget != null) {
 	    IEditorInput editorInput= ((ITextEditor) fTarget).getEditorInput();
 
-	    fASTAdapter= (IASTAdapter) ExtensionPointFactory.createExtensionPoint(LanguageRegistry.findLanguage(editorInput), XformPlugin.kPluginID, "astAdapter");
+	    fASTAdapter= (IASTAdapter) ExtensionFactory.createServiceExtensionForPlugin(LanguageRegistry.findLanguage(editorInput), XformPlugin.kPluginID, "astAdapter");
 	    ASTPatternParser.setASTAdapter(fASTAdapter);
 	}
 
