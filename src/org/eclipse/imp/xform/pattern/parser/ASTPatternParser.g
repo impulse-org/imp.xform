@@ -12,7 +12,7 @@
     import java.util.Set;
     import java.util.Map;
     import java.util.HashMap;
-    import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+    import org.eclipse.imp.services.IASTAdapter;
     import org.eclipse.imp.xform.pattern.matching.Matcher;
     import org.eclipse.imp.xform.pattern.matching.MatchResult;./
 %End
