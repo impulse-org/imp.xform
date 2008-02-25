@@ -8,7 +8,7 @@
  */
 package org.eclipse.imp.xform.pattern.rewriting;
 
-import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+import org.eclipse.imp.services.IASTAdapter;
 import org.eclipse.imp.xform.pattern.matching.MatchResult;
 import org.eclipse.imp.xform.pattern.matching.Matcher;
 import org.eclipse.imp.xform.pattern.parser.Ast.Pattern;

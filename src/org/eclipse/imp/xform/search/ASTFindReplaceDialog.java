@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.imp.language.LanguageRegistry;
+import org.eclipse.imp.language.ServiceFactory;
 import org.eclipse.imp.parser.IParseController;
+import org.eclipse.imp.services.IASTAdapter;
 import org.eclipse.imp.services.IASTFindReplaceTarget;
 import org.eclipse.imp.utils.ExtensionFactory;
 import org.eclipse.imp.xform.XformPlugin;
-import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+import org.eclipse.imp.xform.pattern.matching.IASTMatcher;
 import org.eclipse.imp.xform.pattern.matching.MatchResult;
 import org.eclipse.imp.xform.pattern.matching.Matcher;
 import org.eclipse.imp.xform.pattern.parser.ASTPatternLexer;
@@ -119,7 +121,7 @@ public class ASTFindReplaceDialog extends Dialog {
      */
     private Color fProposalPopupForegroundColor;
     private IDialogSettings fDialogSettings;
-    private IASTAdapter fASTAdapter;
+    private IASTMatcher fASTAdapter;
     private Pattern fPattern;
 
     /**
@@ -1086,7 +1088,7 @@ public class ASTFindReplaceDialog extends Dialog {
 	if (fTarget != null) {
 	    IEditorInput editorInput= ((ITextEditor) fTarget).getEditorInput();
 
-	    fASTAdapter= (IASTAdapter) ExtensionFactory.createServiceExtensionForPlugin(LanguageRegistry.findLanguage(editorInput), XformPlugin.kPluginID, "astAdapter");
+	    fASTAdapter= (IASTMatcher) ServiceFactory.getInstance().getASTAdapter(LanguageRegistry.findLanguage(editorInput));
 	    ASTPatternParser.setASTAdapter(fASTAdapter);
 	}
 

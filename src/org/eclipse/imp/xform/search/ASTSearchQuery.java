@@ -27,10 +27,9 @@ import org.eclipse.imp.model.ModelFactory;
 import org.eclipse.imp.model.ModelFactory.ModelException;
 import org.eclipse.imp.parser.IMessageHandler;
 import org.eclipse.imp.parser.IParseController;
-import org.eclipse.imp.utils.ExtensionFactory;
 import org.eclipse.imp.utils.StreamUtils;
 import org.eclipse.imp.xform.XformPlugin;
-import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+import org.eclipse.imp.xform.pattern.matching.IASTMatcher;
 import org.eclipse.imp.xform.pattern.matching.MatchResult;
 import org.eclipse.imp.xform.pattern.matching.Matcher;
 import org.eclipse.imp.xform.pattern.parser.ASTPatternLexer;
@@ -49,7 +48,7 @@ public class ASTSearchQuery implements ISearchQuery {
 
     private Pattern fASTPattern;
 
-    private IASTAdapter fASTAdapter;
+    private IASTMatcher fASTAdapter;
 
     private ASTSearchScope fScope;
 
@@ -62,7 +61,7 @@ public class ASTSearchQuery implements ISearchQuery {
 	fScope= scope;
         fResult= new ASTSearchResult(this);
 
-	fASTAdapter= (IASTAdapter) ExtensionFactory.createServiceExtensionForPlugin(fLanguage, XformPlugin.kPluginID, "astAdapter");
+	fASTAdapter= (IASTMatcher) ServiceFactory.getInstance().getASTAdapter(fLanguage);
 	ASTPatternParser.setASTAdapter(fASTAdapter);
 
 	ASTPatternLexer lexer= new ASTPatternLexer(fASTPatternString.toCharArray(), "__PATTERN__");

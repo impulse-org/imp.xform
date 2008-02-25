@@ -5,6 +5,7 @@
  */
 package org.eclipse.imp.xform.pattern.matching;
 
+import org.eclipse.imp.services.IASTAdapter;
 import org.eclipse.imp.xform.pattern.parser.ASTPatternParser;
 import org.eclipse.imp.xform.pattern.parser.Ast.*;
 

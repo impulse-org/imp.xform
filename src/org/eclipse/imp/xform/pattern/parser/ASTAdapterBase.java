@@ -15,11 +15,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.eclipse.imp.xform.pattern.matching.IASTAdapter;
+import org.eclipse.imp.xform.pattern.matching.IASTMatcher;
 import org.eclipse.imp.xform.pattern.matching.MatchResult;
 import org.eclipse.imp.xform.pattern.matching.Matcher;
  
-public abstract class ASTAdapterBase implements IASTAdapter {
+public abstract class ASTAdapterBase implements IASTMatcher {
     private static Object[] EMPTY= new Object[0];
 
     /**
