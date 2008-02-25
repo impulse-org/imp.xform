@@ -2,7 +2,7 @@
 <version pluginID="org.eclipse.imp.xform"
          versionID="1.0.72">
     <file path="/org.eclipse.imp.xform/META-INF/MANIFEST.MF"
-          version="1.59"/>
+          version="1.60"/>
     <file path="/org.eclipse.imp.xform/icons/astSearchHit.gif"
           version="1.1"/>
     <file path="/org.eclipse.imp.xform/icons/astSearchPage.gif"
