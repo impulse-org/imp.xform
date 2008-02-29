@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: IMP Transformation Toolkit
+Bundle-Name: IMP Transformation Toolkit (Incubation)
 Bundle-SymbolicName: org.eclipse.imp.xform; singleton:=true
 Bundle-Version: 1.0.73
 Bundle-Activator: org.eclipse.imp.xform.XformPlugin
