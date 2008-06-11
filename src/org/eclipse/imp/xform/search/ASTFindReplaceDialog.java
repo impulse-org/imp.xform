@@ -33,6 +33,7 @@ import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.JFaceColors;
 import org.eclipse.jface.text.DefaultInformationControl;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IFindReplaceTargetExtension;
 import org.eclipse.jface.text.IInformationControl;
 import org.eclipse.jface.text.IInformationControlCreator;
@@ -65,6 +66,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
+import org.eclipse.ui.editors.text.TextFileDocumentProvider;
 import org.eclipse.ui.texteditor.IAbstractTextEditorHelpContextIds;
 import org.eclipse.ui.texteditor.IEditorStatusLine;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -1094,8 +1096,9 @@ public class ASTFindReplaceDialog extends Dialog {
 	}
 	if (fTarget != null) {
 	    IEditorInput editorInput= ((ITextEditor) fTarget).getEditorInput();
+	    TextFileDocumentProvider tfdp= new TextFileDocumentProvider();
 
-	    fASTAdapter= (IASTMatcher) ServiceFactory.getInstance().getASTAdapter(LanguageRegistry.findLanguage(editorInput));
+	    fASTAdapter= (IASTMatcher) ServiceFactory.getInstance().getASTAdapter(LanguageRegistry.findLanguage(editorInput, tfdp));
 	    ASTPatternParser.setASTAdapter(fASTAdapter);
 	}
 
