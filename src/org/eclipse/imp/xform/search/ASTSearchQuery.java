@@ -79,7 +79,9 @@ public class ASTSearchQuery implements ISearchQuery {
     }
 
     class SystemOutMessageHandler implements IMessageHandler {
-	public void endMessageGroup() { }
+        public void clearMessages() { }
+
+        public void endMessageGroup() { }
 
 	public void handleSimpleMessage(String msg, int startOffset, int endOffset, int startCol, int endCol, int startLine, int endLine) {
             System.out.println("[" + startOffset + ":" + (endOffset - startOffset + 1) + "] " + msg);
