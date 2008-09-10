@@ -22,3 +22,4 @@ Export-Package: org.eclipse.imp.xform,
  org.eclipse.imp.xform.pattern.matching,
  org.eclipse.imp.xform.pattern.parser,
  org.eclipse.imp.xform.pattern.parser.Ast
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
