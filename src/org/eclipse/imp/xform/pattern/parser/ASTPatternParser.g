@@ -1,5 +1,5 @@
 %options package=org.eclipse.imp.xform.pattern.parser
-%options template=dtParserTemplate.gi
+%options template=dtParserTemplateF.gi
 %options import_terminals=ASTPatternLexer.gi
 %options automatic_ast=toplevel,visitor=preorder,ast_directory=./Ast,ast_type=PatternNode
 

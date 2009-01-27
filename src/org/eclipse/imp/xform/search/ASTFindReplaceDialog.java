@@ -930,7 +930,7 @@ public class ASTFindReplaceDialog extends Dialog {
 	ASTPatternLexer lexer= new ASTPatternLexer(patternStr.toCharArray(), "__PATTERN__");
         ASTPatternParser parser= new ASTPatternParser(lexer.getLexStream());
     
-        lexer.lexer(parser); // Why wasn't this done by the parser ctor?
+        lexer.lexer(parser.getIPrsStream()); // Why wasn't this done by the parser ctor?
 	return (Pattern) parser.parser();
     }
 

@@ -2,10 +2,10 @@
 -- The AST Pattern KeyWord Lexer
 --
 %options package=org.eclipse.imp.xform.pattern.parser
-%options template=KeywordTemplate.gi
+%options template=KeywordTemplateF.gi
 
 %Include
-    KWLexerLowerCaseMap.gi
+    KWLexerLowerCaseMapF.gi
 %End
 
 %Export

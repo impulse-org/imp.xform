@@ -74,7 +74,7 @@ public class ASTSearchQuery implements ISearchQuery {
 	ASTPatternLexer lexer= new ASTPatternLexer(fASTPatternString.toCharArray(), "__PATTERN__");
         ASTPatternParser parser= new ASTPatternParser(lexer.getLexStream());
     
-        lexer.lexer(parser); // Why wasn't this done by the parser ctor?
+        lexer.lexer(parser.getIPrsStream()); // Why wasn't this done by the parser ctor?
 	fASTPattern= (Pattern) parser.parser();
     }
 

@@ -1,5 +1,5 @@
 %options package=org.eclipse.imp.xform.pattern.parser
-%options template=LexerTemplate.gi
+%options template=LexerTemplateF.gi
 %options filter=ASTPatternKWLexer.gi
 
 %Globals
@@ -13,7 +13,7 @@
 %End
 
 %Include
-    LexerBasicMap.gi
+    LexerBasicMapF.gi
 %End
 
 %Identifier
