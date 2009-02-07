@@ -57,7 +57,6 @@ public class ChildList_ChildList extends ChildList
     {
         if (o == this) return true;
         if (! (o instanceof ChildList_ChildList)) return false;
-        if (! super.equals(o)) return false;
         ChildList_ChildList other = (ChildList_ChildList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -70,7 +69,7 @@ public class ChildList_ChildList extends ChildList
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getChildAt(i).hashCode());
         return hash;

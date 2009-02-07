@@ -53,8 +53,9 @@ public class ASTPatternKWLexer extends ASTPatternKWLexerprs
     static
     {
         tokenKind['$'] = ASTPatternKWLexersym.Char_DollarSign;
+        tokenKind['%'] = ASTPatternKWLexersym.Char_Percent;
         tokenKind['_'] = ASTPatternKWLexersym.Char__;
-
+        
         tokenKind['a'] = ASTPatternKWLexersym.Char_a;
         tokenKind['b'] = ASTPatternKWLexersym.Char_b;
         tokenKind['c'] = ASTPatternKWLexersym.Char_c;

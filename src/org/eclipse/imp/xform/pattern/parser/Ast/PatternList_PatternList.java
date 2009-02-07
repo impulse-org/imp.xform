@@ -57,7 +57,6 @@ public class PatternList_PatternList extends PatternList
     {
         if (o == this) return true;
         if (! (o instanceof PatternList_PatternList)) return false;
-        if (! super.equals(o)) return false;
         PatternList_PatternList other = (PatternList_PatternList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -70,7 +69,7 @@ public class PatternList_PatternList extends PatternList
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getPatternAt(i).hashCode());
         return hash;

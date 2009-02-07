@@ -57,7 +57,6 @@ public class optAttrList_identList extends identList
     {
         if (o == this) return true;
         if (! (o instanceof optAttrList_identList)) return false;
-        if (! super.equals(o)) return false;
         optAttrList_identList other = (optAttrList_identList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -70,7 +69,7 @@ public class optAttrList_identList extends identList
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getidentAt(i).hashCode());
         return hash;

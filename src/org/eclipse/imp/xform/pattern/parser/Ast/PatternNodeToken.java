@@ -33,16 +33,12 @@ public class PatternNodeToken extends PatternNode implements IPatternNodeToken
         if (o == this) return true;
         if (! (o instanceof PatternNodeToken)) return false;
         PatternNodeToken other = (PatternNodeToken) o;
-        return getIToken().getILexStream() == other.getIToken().getILexStream() &&
-               getIToken().getTokenIndex() == other.getIToken().getTokenIndex();
+        return toString().equals(other.toString());
     }
 
     public int hashCode()
     {
-        int hash = 7;
-        if (getIToken().getILexStream() != null) hash = hash * 31 + getIToken().getILexStream().hashCode();
-        hash = hash * 31 + getIToken().getTokenIndex();
-        return hash;
+        return toString().hashCode();
     }
 
     public void accept(IAstVisitor v)

@@ -57,7 +57,6 @@ public class ConstraintList_ConstraintList extends ConstraintList
     {
         if (o == this) return true;
         if (! (o instanceof ConstraintList_ConstraintList)) return false;
-        if (! super.equals(o)) return false;
         ConstraintList_ConstraintList other = (ConstraintList_ConstraintList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -70,7 +69,7 @@ public class ConstraintList_ConstraintList extends ConstraintList
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getConstraintAt(i).hashCode());
         return hash;

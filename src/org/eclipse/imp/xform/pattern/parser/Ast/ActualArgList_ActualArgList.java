@@ -57,7 +57,6 @@ public class ActualArgList_ActualArgList extends ActualArgList
     {
         if (o == this) return true;
         if (! (o instanceof ActualArgList_ActualArgList)) return false;
-        if (! super.equals(o)) return false;
         ActualArgList_ActualArgList other = (ActualArgList_ActualArgList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -70,7 +69,7 @@ public class ActualArgList_ActualArgList extends ActualArgList
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getActualArgAt(i).hashCode());
         return hash;

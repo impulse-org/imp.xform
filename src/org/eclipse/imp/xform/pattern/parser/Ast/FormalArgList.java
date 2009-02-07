@@ -51,7 +51,6 @@ public class FormalArgList extends AbstractPatternNodeList implements IFormalArg
     {
         if (o == this) return true;
         if (! (o instanceof FormalArgList)) return false;
-        if (! super.equals(o)) return false;
         FormalArgList other = (FormalArgList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -64,7 +63,7 @@ public class FormalArgList extends AbstractPatternNodeList implements IFormalArg
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getFormalArgAt(i).hashCode());
         return hash;

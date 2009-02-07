@@ -56,8 +56,14 @@ public class ClosureLink extends PatternNode implements IClosureLink
     public boolean equals(Object o)
     {
         if (o == this) return true;
+        //
+        // The super call test is not required for now because an Ast node
+        // can only extend the root Ast, AstToken and AstList and none of
+        // these nodes contain additional children.
+        //
+        // if (! super.equals(o)) return false;
+        //
         if (! (o instanceof ClosureLink)) return false;
-        if (! super.equals(o)) return false;
         ClosureLink other = (ClosureLink) o;
         if (_DirectLink == null)
             if (other._DirectLink != null) return false;
@@ -70,7 +76,7 @@ public class ClosureLink extends PatternNode implements IClosureLink
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         hash = hash * 31 + (_DirectLink == null ? 0 : _DirectLink.hashCode());
         hash = hash * 31 + (_ELLIPSIS.hashCode());
         hash = hash * 31 + (_MINUS.hashCode());

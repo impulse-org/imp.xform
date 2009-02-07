@@ -39,7 +39,7 @@ public abstract class PatternNode implements IAst
 
     public String toString()
     {
-        return leftIToken.getILexStream().toString(leftIToken.getStartOffset(), rightIToken.getEndOffset());
+        return leftIToken.getPrsStream().toString(leftIToken, rightIToken);
     }
 
     public PatternNode(IToken token) { this.leftIToken = this.rightIToken = token; }
@@ -57,26 +57,11 @@ public abstract class PatternNode implements IAst
     }
     public java.util.ArrayList getAllChildren() { return getChildren(); }
 
-    public boolean equals(Object o)
-    {
-        if (o == this) return true;
-        if (! (o instanceof PatternNode)) return false;
-        PatternNode other = (PatternNode) o;
-        return getLeftIToken().getILexStream() == other.getLeftIToken().getILexStream() &&
-               getLeftIToken().getTokenIndex() == other.getLeftIToken().getTokenIndex() &&
-               getRightIToken().getILexStream() == other.getRightIToken().getILexStream() &&
-               getRightIToken().getTokenIndex() == other.getRightIToken().getTokenIndex();
-    }
-
-    public int hashCode()
-    {
-        int hash = 7;
-        if (getLeftIToken().getILexStream() != null) hash = hash * 31 + getLeftIToken().getILexStream().hashCode();
-        hash = hash * 31 + getLeftIToken().getTokenIndex();
-        if (getRightIToken().getILexStream() != null) hash = hash * 31 + getRightIToken().getILexStream().hashCode();
-        hash = hash * 31 + getRightIToken().getTokenIndex();
-        return hash;
-    }
+    /**
+     * Since the Ast type has no children, any two instances of it are equal.
+     */
+    public boolean equals(Object o) { return o instanceof PatternNode; }
+    public abstract int hashCode();
     public abstract void accept(IAstVisitor v);
 }
 

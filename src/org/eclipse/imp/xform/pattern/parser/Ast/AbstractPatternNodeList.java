@@ -64,6 +64,18 @@ public abstract class AbstractPatternNodeList extends PatternNode
         list.add(element);
     }
 
+    public abstract boolean equals(Object o);
+
+    public int hashCode()
+    {
+        int hash = 7;
+        for (int i = 0; i < size(); i++)
+        {
+            PatternNode element = getElementAt(i);
+            hash = hash * 31 + (element == null ? 0 : element.hashCode());
+        }
+        return hash;
+    }
 }
 
 

@@ -51,7 +51,6 @@ public class ActualArgList extends AbstractPatternNodeList implements IActualArg
     {
         if (o == this) return true;
         if (! (o instanceof ActualArgList)) return false;
-        if (! super.equals(o)) return false;
         ActualArgList other = (ActualArgList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -64,7 +63,7 @@ public class ActualArgList extends AbstractPatternNodeList implements IActualArg
 
     public int hashCode()
     {
-        int hash = super.hashCode();
+        int hash = 7;
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getActualArgAt(i).hashCode());
         return hash;
