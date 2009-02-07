@@ -1,0 +1,54 @@
+
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2007 IBM Corporation.
+// All rights reserved. This program and the accompanying materials
+// are made available under the terms of the Eclipse Public License v1.0
+// which accompanies this distribution, and is available at
+// http://www.eclipse.org/legal/epl-v10.html
+//
+//Contributors:
+//    Philippe Charles (pcharles@us.ibm.com) - initial API and implementation
+
+////////////////////////////////////////////////////////////////////////////////
+
+package org.eclipse.imp.xform.pattern.parser.Ast;
+
+import lpg.runtime.*;
+
+import java.util.Collections;
+import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
+import org.eclipse.imp.services.IASTAdapter;
+import org.eclipse.imp.xform.pattern.matching.Matcher;
+import org.eclipse.imp.xform.pattern.matching.MatchResult;
+/**
+ * is always implemented by <b>PatternNodeToken</b>. It is also implemented by:
+ *<b>
+ *<ul>
+ *<li>FormalArg
+ *<li>ActualArg
+ *<li>optSharp
+ *<li>NodeType
+ *<li>optNodeName
+ *<li>NumericBound
+ *<li>Unbounded
+ *<li>ident
+ *<li>NumberLiteral
+ *<li>StringLiteral
+ *<li>Equals
+ *<li>NotEquals
+ *<li>DirectLink0
+ *<li>DirectLink1
+ *</ul>
+ *</b>
+ */
+public interface IPatternNodeToken
+{
+    public IToken getLeftIToken();
+    public IToken getRightIToken();
+
+    void accept(IAstVisitor v);
+}
+
+
