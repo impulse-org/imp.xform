@@ -35,7 +35,7 @@
             commandId="org.eclipse.imp.xform.findReplace"
             contextId="org.eclipse.ui.contexts.window"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-            sequence="M3+M1+R"/>
+            sequence="M3+M2+M1+R"/>
    </extension>
 
    <extension
