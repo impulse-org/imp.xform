@@ -86,14 +86,8 @@ public class Node extends PatternNode implements INode
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        //
-        // The super call test is not required for now because an Ast node
-        // can only extend the root Ast, AstToken and AstList and none of
-        // these nodes contain additional children.
-        //
-        // if (! super.equals(o)) return false;
-        //
         if (! (o instanceof Node)) return false;
+        if (! super.equals(o)) return false;
         Node other = (Node) o;
         if (! _type.equals(other._type)) return false;
         if (_name == null)
@@ -118,7 +112,7 @@ public class Node extends PatternNode implements INode
 
     public int hashCode()
     {
-        int hash = 7;
+        int hash = super.hashCode();
         hash = hash * 31 + (_type.hashCode());
         hash = hash * 31 + (_name == null ? 0 : _name.hashCode());
         hash = hash * 31 + (_optSharp == null ? 0 : _optSharp.hashCode());

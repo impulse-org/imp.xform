@@ -57,14 +57,8 @@ public class Child extends PatternNode implements IChild
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        //
-        // The super call test is not required for now because an Ast node
-        // can only extend the root Ast, AstToken and AstList and none of
-        // these nodes contain additional children.
-        //
-        // if (! super.equals(o)) return false;
-        //
         if (! (o instanceof Child)) return false;
+        if (! super.equals(o)) return false;
         Child other = (Child) o;
         if (_LinkType == null)
             if (other._LinkType != null) return false;
@@ -76,7 +70,7 @@ public class Child extends PatternNode implements IChild
 
     public int hashCode()
     {
-        int hash = 7;
+        int hash = super.hashCode();
         hash = hash * 31 + (_LinkType == null ? 0 : _LinkType.hashCode());
         hash = hash * 31 + (_Node.hashCode());
         return hash;

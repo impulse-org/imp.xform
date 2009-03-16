@@ -58,14 +58,8 @@ public class Pattern extends PatternNode implements IPattern
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        //
-        // The super call test is not required for now because an Ast node
-        // can only extend the root Ast, AstToken and AstList and none of
-        // these nodes contain additional children.
-        //
-        // if (! super.equals(o)) return false;
-        //
         if (! (o instanceof Pattern)) return false;
+        if (! super.equals(o)) return false;
         Pattern other = (Pattern) o;
         if (! _Node.equals(other._Node)) return false;
         if (_ScopeBlock == null)
@@ -77,7 +71,7 @@ public class Pattern extends PatternNode implements IPattern
 
     public int hashCode()
     {
-        int hash = 7;
+        int hash = super.hashCode();
         hash = hash * 31 + (_Node.hashCode());
         hash = hash * 31 + (_ScopeBlock == null ? 0 : _ScopeBlock.hashCode());
         return hash;

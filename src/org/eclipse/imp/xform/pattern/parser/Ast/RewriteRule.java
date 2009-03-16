@@ -49,14 +49,8 @@ public class RewriteRule extends PatternNode implements IRewriteRule
     public boolean equals(Object o)
     {
         if (o == this) return true;
-        //
-        // The super call test is not required for now because an Ast node
-        // can only extend the root Ast, AstToken and AstList and none of
-        // these nodes contain additional children.
-        //
-        // if (! super.equals(o)) return false;
-        //
         if (! (o instanceof RewriteRule)) return false;
+        if (! super.equals(o)) return false;
         RewriteRule other = (RewriteRule) o;
         if (! _lhs.equals(other._lhs)) return false;
         if (! _rhs.equals(other._rhs)) return false;
@@ -65,7 +59,7 @@ public class RewriteRule extends PatternNode implements IRewriteRule
 
     public int hashCode()
     {
-        int hash = 7;
+        int hash = super.hashCode();
         hash = hash * 31 + (_lhs.hashCode());
         hash = hash * 31 + (_rhs.hashCode());
         return hash;

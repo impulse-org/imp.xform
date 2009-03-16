@@ -51,6 +51,7 @@ public class identList extends AbstractPatternNodeList implements IoptAttrList
     {
         if (o == this) return true;
         if (! (o instanceof identList)) return false;
+        if (! super.equals(o)) return false;
         identList other = (identList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -63,7 +64,7 @@ public class identList extends AbstractPatternNodeList implements IoptAttrList
 
     public int hashCode()
     {
-        int hash = 7;
+        int hash = super.hashCode();
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getidentAt(i).hashCode());
         return hash;

@@ -51,6 +51,7 @@ public class ConstraintList extends AbstractPatternNodeList implements IConstrai
     {
         if (o == this) return true;
         if (! (o instanceof ConstraintList)) return false;
+        if (! super.equals(o)) return false;
         ConstraintList other = (ConstraintList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -63,7 +64,7 @@ public class ConstraintList extends AbstractPatternNodeList implements IConstrai
 
     public int hashCode()
     {
-        int hash = 7;
+        int hash = super.hashCode();
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getConstraintAt(i).hashCode());
         return hash;

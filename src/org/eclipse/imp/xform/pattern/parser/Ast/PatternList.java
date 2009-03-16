@@ -51,6 +51,7 @@ public class PatternList extends AbstractPatternNodeList implements IPatternList
     {
         if (o == this) return true;
         if (! (o instanceof PatternList)) return false;
+        if (! super.equals(o)) return false;
         PatternList other = (PatternList) o;
         if (size() != other.size()) return false;
         for (int i = 0; i < size(); i++)
@@ -63,7 +64,7 @@ public class PatternList extends AbstractPatternNodeList implements IPatternList
 
     public int hashCode()
     {
-        int hash = 7;
+        int hash = super.hashCode();
         for (int i = 0; i < size(); i++)
             hash = hash * 31 + (getPatternAt(i).hashCode());
         return hash;
