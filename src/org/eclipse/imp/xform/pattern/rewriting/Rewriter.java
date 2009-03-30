@@ -15,13 +15,13 @@
  */
 package org.eclipse.imp.xform.pattern.rewriting;
 
-import org.eclipse.imp.services.IASTAdapter;
+import org.eclipse.imp.services.IASTMatchAdapter;
 import org.eclipse.imp.xform.pattern.matching.MatchResult;
 import org.eclipse.imp.xform.pattern.matching.Matcher;
 import org.eclipse.imp.xform.pattern.parser.Ast.Pattern;
 
 public class Rewriter {
-    private final IASTAdapter fAdapter;
+    private final IASTMatchAdapter fAdapter;
 
     private final Pattern fRuleRHS;
 
