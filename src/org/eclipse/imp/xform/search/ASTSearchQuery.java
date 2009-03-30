@@ -122,7 +122,7 @@ public class ASTSearchQuery implements ISearchQuery {
                                     return false;
                                 parseController.initialize(resource.getProjectRelativePath(), srcProject, msgHandler);
 
-                                Object astRoot= parseController.parse(contents, false, monitor);
+                                Object astRoot= parseController.parse(contents, monitor);
 
                                 if (astRoot == null)
                                     return false;
