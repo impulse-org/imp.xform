@@ -13,6 +13,7 @@
 package org.eclipse.imp.xform.pattern.matching;
 
 import org.eclipse.imp.services.IASTAdapter;
+import org.eclipse.imp.services.IASTMatchAdapter;
 import org.eclipse.imp.xform.pattern.parser.ASTPatternParser;
 import org.eclipse.imp.xform.pattern.parser.Ast.*;
 
@@ -144,7 +145,7 @@ public class Matcher {
         return "<matcher: " + fPattern + ">";
     }
 
-    public IASTAdapter getAdapter() {
+    public IASTMatchAdapter getAdapter() {
 	return fASTAdapter;
     }
 }
