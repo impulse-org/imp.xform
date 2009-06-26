@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.eclipse.imp.xform; singleton:=true
 Bundle-Version: 0.1.91
 Bundle-Activator: org.eclipse.imp.xform.XformPlugin
 Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
 Bundle-Vendor: rfuhrer@watson.ibm.com
 Require-Bundle: lpg.runtime,
  org.eclipse.core.resources,
@@ -20,5 +21,7 @@ Require-Bundle: lpg.runtime,
 Export-Package: org.eclipse.imp.xform,
  org.eclipse.imp.xform.pattern.matching,
  org.eclipse.imp.xform.pattern.parser,
- org.eclipse.imp.xform.pattern.parser.Ast
+ org.eclipse.imp.xform.pattern.parser.Ast,
+ org.eclipse.imp.xform.pattern.rewriting,
+ org.eclipse.imp.xform.search
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
