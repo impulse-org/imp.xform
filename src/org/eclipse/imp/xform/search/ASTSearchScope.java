@@ -7,7 +7,6 @@
 *
 * Contributors:
 *    Robert Fuhrer (rfuhrer@watson.ibm.com) - initial API and implementation
-
 *******************************************************************************/
 
 package org.eclipse.imp.xform.search;
@@ -18,7 +17,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 public class ASTSearchScope {
-    Set fProjects= new HashSet();
+    Set<IProject> fProjects= new HashSet<IProject>();
 
     private ASTSearchScope() { }
 
@@ -30,7 +29,7 @@ public class ASTSearchScope {
         fProjects.add(project);
     }
 
-    public Set/*<IProject>*/ getProjects() {
+    public Set<IProject> getProjects() {
         return fProjects;
     }
 
